@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { URL } from "../constants/url/url.ts";
 
-const Home = lazy(() => import("../pages/home.tsx"));
+const Intro = lazy(() => import("../pages/Intro/intro"));
 const Schedule = lazy(() => import("../pages/schdule/schedule.tsx"));
 const App = lazy(() => import("../App"));
 
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: <Home />,
+				element: <Intro />,
 			},
 			{
 				path: URL.schedule,
