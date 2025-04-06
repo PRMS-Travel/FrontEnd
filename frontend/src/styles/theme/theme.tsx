@@ -11,6 +11,11 @@ declare module '@emotion/react' {
 			lg: string
 			xl: string
 		};
+		fontWeights: {
+			medium: string
+			bold: string
+			semibold: string
+		}
 		colors: {
 			black: string
 			gray:string
@@ -64,6 +69,11 @@ const theme: Theme = {
 		sm:'0.5rem',
 		md:'1rem',
 		lg:' 1.25rem',
+	},
+	fontWeights:{
+		semibold:'600',
+		bold:'700',
+		medium:'500'
 	}
 }
 
