@@ -7,6 +7,8 @@ import bgImage from '../../assets/backGround.svg';
 import {AUTH_MESSAGES} from "../../constants/authConstants";
  import {INTRO_MESSAGES} from '../../constants/introConstant'
 import {SearchBar} from "../../components/searchBar/searchBar";
+import {Calendar} from "../../components/calendar/calendar";
+import {List} from"../../components/list/list"
 
 const Intro: React.FC = () => {
 
@@ -21,7 +23,13 @@ const Intro: React.FC = () => {
 			</S.AuthMenu>
 			</S.AuthNavContainer>
 			<S.Title>{INTRO_MESSAGES.INTRO}</S.Title>
-			<SearchBar type="location"/>
+			<SearchBar type="location"   />
+		<S.ModalWrapper>
+			<List/>
+				<Calendar />
+
+		</S.ModalWrapper>
+
 		</S.BackGround>
 	);
 };
