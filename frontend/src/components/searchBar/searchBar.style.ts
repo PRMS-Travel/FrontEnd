@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 export const SearchBarContainer = styled.div(({ theme }) => ({
 	borderRadius: theme.borderRadius.sm,
-	width: "39.75rem",
+	width: "45.5rem",
 	height: "4.1875rem",
 	backgroundColor: theme.colors.white,
 	marginTop:"1.75rem",
@@ -15,6 +15,7 @@ export const SearchBarContainer = styled.div(({ theme }) => ({
 
 export const Input =styled.input(({ theme }) => ({
 	display: "flex",
+	flex: 1,
 	width: "15rem",
 	height: "4.1875rem",
 	padding: "0.6rem",
