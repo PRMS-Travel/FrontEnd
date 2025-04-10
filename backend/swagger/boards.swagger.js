@@ -199,12 +199,23 @@
  *                     type: string
  *                     example: "예기치 않은 오류가 발생했습니다."
  * 
- *   /maps/{id}:
+ *   /maps/{mapId}:
  *     put:
  *       tags:
  *         - Maps
  *       summary: 지도 별칭 수정
  *       description: 로그인 유저의 지도 별칭을 수정할 때 호출 
+ *       requestBody:
+ *         description: 지도 별칭 수정 정보 (수정할 별칭)
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mapName:
+ *                   type: string
+ *                   example: "서울 여행"
  *       responses:
  *         '200':
  *           description: 별칭 수정 성공
