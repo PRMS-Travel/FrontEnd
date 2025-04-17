@@ -7,12 +7,10 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    env_file:
-      - ./backend/.env
     ports:
       - "5173:5173"
     environment:
-      - VITE_HOST=VITE_HOST
+      - VITE_HOST=0.0.0.0
       - NODE_ENV=development
       - BROWSER=none
     depends_on:
@@ -24,20 +22,18 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
-    env_file:
-      - ./frontend/.env
     environment:
-      - DB_HOST=${DB_HOST}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_PORT=${DB_PORT}
+      - DB_HOST=127.0.0.1
+      - DB_USER=root
+      - DB_PASSWORD=GHKDwjddn
+      - DB_PORT=3306
     depends_on:
       - mariadb
 
   mariadb:
     image: mariadb:latest
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=GHKDwjddn
       - MYSQL_DATABASE=Travel
     networks:
       - travel-network
