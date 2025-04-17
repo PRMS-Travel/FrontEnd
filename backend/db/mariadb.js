@@ -5,8 +5,8 @@ dotenv.config();
 // db 연결 정보
 const pool = mariadb.createPool({
   host: 'localhost',
-  user: root,
-  password : GHKDwjddn,
+  user: process.env.DB_USER,
+  password : process.env.DB_PASSWORD,
   database: 'Travel',
   dateStrings : true
 });
