@@ -23,6 +23,8 @@ export const Input =styled.input(({ theme }) => ({
 	fontWeight:theme.fontWeights.medium,
 	border: "none",
 	color: theme.colors.black,
+	"&:focus":{
+		outline:"none"}
 }))
 export const CustomDivider = styled.div`
     width: 1px;
