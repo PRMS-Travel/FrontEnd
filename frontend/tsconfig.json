@@ -6,8 +6,14 @@
   ],
 
   "compilerOptions": {
+    "strict": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "jsx": "react-jsx",
+    "types": ["vite-plugin-svgr/client"],
+    "esModuleInterop": true,
     "jsxImportSource": "@emotion/react",
   },
+  "include": ["src","vite-env.d.ts"]
 
 }
