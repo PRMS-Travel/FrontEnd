@@ -1,23 +1,19 @@
 /**
  * @swagger
+ * tags:
+ *   - name: Schedules
+ *     description: 일정 관련 API
+ */
+
+/**
+ * @swagger
  * paths:
- *   /schedules/:
+ *   /schedules:
  *     get:
  *       tags:
  *         - Schedules
  *       summary: 일정 목록 조회
  *       description: 일정 목록을 조회합니다.
- *       requestBody:
- *         description: 저장할 일정 목록
- *         required: true
- *         content:
- *           application/json:
- *              schema:
- *                type: object
- *                properties:
- *                  mapId:
- *                    type: integer
- *                    example: 1
  *       responses:
  *         '200':
  *           description: >
@@ -49,15 +45,17 @@
  *                           placeId:
  *                             type: integer
  *                             example: 1
+ *                           orderBy:
+ *                             type: integer
+ *                             example: 1
  *                           playTime:
  *                             type: timestamp
  *                             example: "2023-10-01 10:00:00"
  *                           moveTime:
  *                             type: timestamp
  *                             example: "2023-10-01 10:00:00"
- * 
  *         '400':
- *           description: bad request
+ *           description: "데이터 누락 또는 형식 오류"
  *           content:
  *             application/json:
  *               schema:
@@ -65,10 +63,9 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "bad request"
- * 
+ *                     example: "전달 데이터를 다시 확인해주세요."
  *         '404':
- *           description: not found
+ *           description: "일정 없음"
  *           content:
  *             application/json:
  *               schema:
@@ -76,9 +73,9 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "not found"
+ *                     example: "일치하는 일정 목록을 찾지 못했습니다."
  *         '500':
- *           description: server error ( DB 연결 실패, DB 쿼리 실패 )
+ *           description: "서버 오류"
  *           content:
  *             application/json:
  *               schema:
@@ -86,7 +83,7 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "not found"
+ *                     example: "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요."
  * 
  *     post:
  *       tags:
@@ -104,17 +101,14 @@
  *                  day:
  *                    type: integer
  *                    example: 1
- *                  start_time:
+ *                  startTime:
  *                    type: timestamp
  *                    example: "2023-10-01 10:00:00"
- *                  map_id:
- *                    type: integer
- *                    example: 1
  *       responses:
- *         '200':
+ *         '201':
  *           description: 성공적으로 일정 목록을 저장합니다.
  *         '400':
- *           description: bad request
+ *           description: "데이터 누락 또는 형식 오류"
  *           content:
  *             application/json:
  *               schema:
@@ -122,20 +116,9 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "bad request"
- * 
- *         '404':
- *           description: not found
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   message:
- *                     type: string
- *                     example: "not found"
+ *                     example: "전달 데이터를 다시 확인해주세요."
  *         '500':
- *           description: server error ( DB 연결 실패, DB 쿼리 실패 )
+ *           description: "서버 오류"
  *           content:
  *             application/json:
  *               schema:
@@ -143,7 +126,7 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "not found"
+ *                     example: "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요."
  * 
  *     put:
  *       tags:
@@ -158,16 +141,17 @@
  *              schema:
  *                type: object
  *                properties:
- *                  start_time:
+ *                  startTime:
  *                    type: timestamp
  *                    example: "2023-10-01 10:00:00"
+ *                  scheduleId:
+ *                    type: integer
+ *                    example: 1
  *       responses:
  *         '200':
  *           description: 성공적으로 시작시간을 업데이트
- *           content:
- *             application/json:
  *         '400':
- *           description: bad request
+ *           description: "데이터 누락 또는 형식 오류"
  *           content:
  *             application/json:
  *               schema:
@@ -175,10 +159,9 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "bad request"
- * 
+ *                     example: "전달 데이터를 다시 확인해주세요."
  *         '404':
- *           description: not found
+ *           description: "일정 없음"
  *           content:
  *             application/json:
  *               schema:
@@ -186,9 +169,9 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "not found"
+ *                     example: "일치하는 일정 목록을 찾지 못했습니다."
  *         '500':
- *           description: server error ( DB 연결 실패, DB 쿼리 실패 )
+ *           description: "서버 오류"
  *           content:
  *             application/json:
  *               schema:
@@ -196,9 +179,8 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "not found"
+ *                     example: "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요."
  */
-
 
 /**
  * @swagger
@@ -234,12 +216,18 @@
  *                    type: interger
  *                    example: 1
  *       responses:
- *         '200':
+ *         '201':
  *           description: 성공적으로 일정 목록을 저장합니다.
  *           content:
  *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "성공적으로 일정이 저장되었습니다."
  *         '400':
- *           description: bad request
+ *           description: "데이터 누락 또는 형식 오류"
  *           content:
  *             application/json:
  *               schema:
@@ -247,21 +235,9 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "bad request"
- * 
- *         '404':
- *           description: not found
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   message:
- *                     type: string
- *                     example: "not found"
- * 
+ *                     example: "전달 데이터를 다시 확인해주세요."
  *         '500':
- *           description: server error ( DB 연결 실패, DB 쿼리 실패 )
+ *           description: "서버 오류"
  *           content:
  *             application/json:
  *               schema:
@@ -269,7 +245,7 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "not found"
+ *                     example: "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요."
  * 
  *     delete:
  *       tags:
@@ -287,17 +263,22 @@
  *              schema:
  *                type: object
  *                properties:
- *                  mapId:
- *                    type: integer
- *                    example: 1
  *                  placeId:
  *                    type: integer
  *                    example: 1
  *       responses:
  *         '200':
  *           description: 성공적으로 데이터 삭제
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "성공적으로 일정이 삭제되었습니다."
  *         '400':
- *           description: bad request
+ *           description: "데이터 누락 또는 형식 오류"
  *           content:
  *             application/json:
  *               schema:
@@ -305,10 +286,9 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "bad request"
- * 
+ *                     example: "전달 데이터를 다시 확인해주세요."
  *         '404':
- *           description: not found
+ *           description: "일정 없음"
  *           content:
  *             application/json:
  *               schema:
@@ -316,10 +296,9 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "not found"
- * 
+ *                     example: "일치하는 일정 목록을 찾지 못했습니다."
  *         '500':
- *           description: server error ( DB 연결 실패, DB 쿼리 실패 )
+ *           description: "서버 오류"
  *           content:
  *             application/json:
  *               schema:
@@ -327,5 +306,5 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "not found"
+ *                     example: "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요."
  */
