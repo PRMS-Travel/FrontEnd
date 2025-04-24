@@ -7,9 +7,12 @@ declare module '@emotion/react' {
 			xs: string
 			sm: string
 			base:string
+			base18:string
+			mmd:string
 			md: string
 			lg: string
 			xl: string
+
 		};
 		fontWeights: {
 			medium: string
@@ -45,7 +48,9 @@ const theme: Theme = {
 		xs: '12px',
 		sm:'14px',
 		base: '16px',
+		base18:'18px',
 		md: '20px',
+		mmd:'24px',
 		lg: '40px',
 		xl: '42px',
 	},
