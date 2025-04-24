@@ -42,6 +42,9 @@
  *                       items:
  *                         type: object
  *                         properties:
+ *                           detailId:
+ *                             type: integer
+ *                             example: 1
  *                           placeId:
  *                             type: integer
  *                             example: 1
@@ -49,11 +52,11 @@
  *                             type: integer
  *                             example: 1
  *                           playTime:
- *                             type: timestamp
- *                             example: "2023-10-01 10:00:00"
+ *                             type: integer
+ *                             example: "일정 소요 시간 분단위로 integer 타입 저장"
  *                           moveTime:
- *                             type: timestamp
- *                             example: "2023-10-01 10:00:00"
+ *                             type: integer
+ *                             example: "이동 시간 분단위로 integer 타입 저장"
  *         '400':
  *           description: "데이터 누락 또는 형식 오류"
  *           content:
@@ -96,14 +99,16 @@
  *         content:
  *           application/json:
  *              schema:
- *                type: object
- *                properties:
- *                  day:
- *                    type: integer
- *                    example: 1
- *                  startTime:
- *                    type: timestamp
- *                    example: "2023-10-01 10:00:00"
+ *                type: array
+ *                items:
+ *                  type: object
+ *                  properties:
+ *                    day:
+ *                      type: integer
+ *                      example: 1
+ *                    startTime:
+ *                      type: timestamp
+ *                      example: "2023-10-01 10:00:00"
  *       responses:
  *         '201':
  *           description: 성공적으로 일정 목록을 저장합니다.
