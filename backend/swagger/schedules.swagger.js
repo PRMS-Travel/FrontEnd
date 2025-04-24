@@ -14,6 +14,13 @@
  *         - Schedules
  *       summary: 일정 목록 조회
  *       description: 일정 목록을 조회합니다.
+ *       parameters:
+ *         - in: query
+ *           name: mapId
+ *           schema:
+ *             type: integer
+ *           required: true
+ *           description: 지도 ID
  *       responses:
  *         '200':
  *           description: >
@@ -98,17 +105,43 @@
  *         required: true
  *         content:
  *           application/json:
- *              schema:
- *                type: array
- *                items:
- *                  type: object
- *                  properties:
- *                    day:
- *                      type: integer
- *                      example: 1
- *                    startTime:
- *                      type: timestamp
- *                      example: "2023-10-01 10:00:00"
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 schedules:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       day:
+ *                         type: integer
+ *                         example: 1
+ *                       startTime:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2023-12-12 12:00:00"
+ *                       mapId:
+ *                         type: integer
+ *                         example: 2
+ *                   description: 일정 목록
+ *                 details:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       placeId:
+ *                         type: integer
+ *                         example: 1
+ *                       orderBy:
+ *                         type: integer
+ *                         example: 1
+ *                       playTime:
+ *                         type: integer
+ *                         example: 70
+ *                       moveTime:
+ *                         type: integer
+ *                         example: 70
+ *                   description: 상세 정보 목록
  *       responses:
  *         '201':
  *           description: 성공적으로 일정 목록을 저장합니다.
@@ -185,52 +218,22 @@
  *                   message:
  *                     type: string
  *                     example: "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요."
- */
-
-/**
- * @swagger
- * paths:
- *   /schedules/detail:
- *     post:
+ * 
+ *     delete:
  *       tags:
  *         - Schedules
- *       summary: 하루하루의 일정 목록 저장
- *       description: |
- *           사용자가 일정을 저장합니다.(화면의 저장 버튼을 클릭시 저장)<br>
- *           time은 모두 분단위 저장장<br>
- *           play_time은 사용자가 일정에서 있던 시간<br>
- *           move_time(다음 일정 이동시간)이 없으면 마지막 일정으로 저장됨.<br>
- *       requestBody:
- *         description: 저장할 일정 목록
- *         required: true
- *         content:
- *           application/json:
- *              schema:
- *                type: object
- *                properties:
- *                  place_id:
- *                    type: integer
- *                    example: 1
- *                  schedule_id:
- *                    type: integer
- *                    example: 1
- *                  play_time:
- *                    type: interger
- *                    example: 1
- *                  move_time:
- *                    type: interger
- *                    example: 1
+ *       summary: map의 schedules 전체 삭제
+ *       description: mapId의 schedules 전체 삭제
+ *       parameters:
+ *         - in: query
+ *           name: mapId
+ *           schema:
+ *             type: integer
+ *           required: true
+ *           description: 지도 ID
  *       responses:
- *         '201':
- *           description: 성공적으로 일정 목록을 저장합니다.
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   message:
- *                     type: string
- *                     example: "성공적으로 일정이 저장되었습니다."
+ *         '200':
+ *           description: 전체 삭제 성공
  *         '400':
  *           description: "데이터 누락 또는 형식 오류"
  *           content:
@@ -241,6 +244,16 @@
  *                   message:
  *                     type: string
  *                     example: "전달 데이터를 다시 확인해주세요."
+ *         '404':
+ *           description: "일정 없음"
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "일치하는 지도를 찾지 못했습니다."
  *         '500':
  *           description: "서버 오류"
  *           content:
@@ -251,7 +264,12 @@
  *                   message:
  *                     type: string
  *                     example: "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요."
- * 
+ */
+
+/**
+ * @swagger
+ * paths:
+ *   /schedules/detail:
  *     delete:
  *       tags:
  *         - Schedules
