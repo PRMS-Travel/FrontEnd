@@ -14,10 +14,10 @@ const join = async (req, res) => {
         }
 
         await userService.joinUser(loginId, pwd);
-        return res.status(StatusCodes.CREATED).end();
+        return res.status(StatusCodes.CREATED).json({ message : "성공적으로 회원가입 되었습니다. "});
     } catch(err) {
         console.log(err)
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message : "서버 에러가 발생했습니다." });
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message : "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요." });
     }
 }
 
@@ -26,21 +26,22 @@ const login = async (req, res) => {
 
     try {
         const loginUser = await userService.findUserByLoginId(loginId);
-
+        
         if (!loginUser[0]) {
-            return res.status(StatusCodes.UNAUTHORIZED).json({ message : "해당 아이디의 유저를 찾을 수 없습니다." });
+            return res.status(StatusCodes.UNAUTHORIZED).json({ message : "아이디 또는 비밀번호를 다시 확인해주세요." });
+        }
+        
+        const hashPassword = crypto.pbkdf2Sync(pwd, loginUser[0].salt, 10000, 10, 'sha512').toString('base64');
+        if (loginUser[0].password !== hashPassword) {
+            return res.status(StatusCodes.UNAUTHORIZED).json({ message: "아이디 또는 비밀번호를 다시 확인해주세요." });
         }
 
-        const hashPassword = crypto.pbkdf2Sync(pwd, loginUser[0].salt, 10000, 10, 'sha512').toString('base64');
-        if (loginUser[0].password === hashPassword) {
-            // token 관련은 추후 업데이트
-            return res.status(StatusCodes.OK).json(loginUser[0]);
-        } else {
-            return res.status(StatusCodes.UNAUTHORIZED).json({ message : "비밀번호가 일치하지 않습니다." });
-        }
+        // token 관련은 추후 업데이트
+        return res.status(StatusCodes.OK).json(loginUser[0]);
+
     } catch (err) {
         console.log(err);
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message : "서버 에러가 발생했습니다." });
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message : "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요." });
     }
 }
 
