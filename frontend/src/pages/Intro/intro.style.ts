@@ -37,8 +37,17 @@ export const AuthMenu = styled.div(({theme}) => ({
 }))
 
 export const Title = styled.div(({ theme }) => ({
-color:theme.colors.white,
+	color:theme.colors.white,
 	fontSize:theme.fontSizes.lg,
 	fontWeight:theme.fontWeights.bold,
-marginTop:'3rem',
+	marginTop:'3rem',
 }));
+
+export const ModalWrapper = styled.div`  
+		display: flex;
+    margin-top: 1.31rem;
+    padding: 1rem 1.5rem;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;`

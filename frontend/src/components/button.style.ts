@@ -1,8 +1,10 @@
 import styled from "styled-components";
 
-export const StyledButton = styled.button`
+export const StyledButton = styled.button<{
+	width?: string;
+}>`
     font-size: 16px;
-    width: 80px;
+    width: ${({ width }) => width || "80px"};
     height: 50px;
     background-color: white;
     border: 1px solid #1E2A3C;
