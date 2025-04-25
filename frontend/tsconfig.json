@@ -8,9 +8,6 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
-    "types": [
-  		"kakao.maps.d.ts"
-		]
   },
 
 }
