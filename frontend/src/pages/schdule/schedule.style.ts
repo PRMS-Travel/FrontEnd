@@ -14,4 +14,23 @@ export const Header = styled.header`
     align-items: center;
     justify-content: space-between;
     padding-bottom: 20px;
+
+    .logo_wrap{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+`;
+
+export const Main = styled.main`
+    display: flex;
+`
+
+export const ResizableContainer = styled.div`
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    border-right: 2px solid #D1D1D1;
 `;

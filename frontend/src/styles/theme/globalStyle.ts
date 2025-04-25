@@ -20,14 +20,12 @@ export const GlobalStyles = css`
         font-style: normal;
     }
     body {
-        font-family: "Inter", sans-serif;
-		    
+        font-family: "Infer", sans-serif;
     }
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
-
 `;
 

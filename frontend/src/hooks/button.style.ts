@@ -14,6 +14,7 @@ export const StyledButton = styled.button<{
         font-weight: bold;
         color: white;
     }
+    cursor: pointer;
 `;
 
 export const ButtonWrap = styled.div`
