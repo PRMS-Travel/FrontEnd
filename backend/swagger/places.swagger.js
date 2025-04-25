@@ -130,6 +130,16 @@
  *                 mapId:
  *                   type: integer
  *                   example: 1
+ *                 latitude:
+ *                   type: decimal
+ *                   example: 10.000
+ *                 longitude:
+ *                   type: decimal
+ *                   example: 10.000
+ *                 stateCode:
+ *                   type: integer
+ *                   example: 1
+ * 
  *       responses:
  *         '201':
  *           description: 장소보관함 목록 추가 성공
@@ -166,7 +176,7 @@
 /**
  * @swagger
  * paths:
- *   /places/{id}:
+ *   /places/{placeId}:
  *     put:
  *       tags:
  *         - Places
