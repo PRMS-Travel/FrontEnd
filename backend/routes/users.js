@@ -1,12 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const { body } = require("express-validator");
 
-router.post('/join', (req, res) => {
-    res.send("회원가입 API");
-});
+const { join, login } = require('../controller/userController');
 
-router.post('/login', ()=> {
-    res.send("로그인 API");
-});
+router.post('/join', join);
+router.post('/login', login);
 
 module.exports = router;
