@@ -39,7 +39,7 @@ export const TitleWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 1.25rem;
-    width: 31.25rem; // ✅ 입력창과 너비 맞춤
+    width: 31.25rem;
     align-items: flex-start;
 	padding-top: 5.4rem;
 		padding-bottom: 2rem;
@@ -56,7 +56,7 @@ export const LoginMessage = styled.div(({ theme }) => ({
 export const WelcomeMessage = styled.div(({ theme }) => ({
 	color: theme.colors.sodomy200,
 	fontWeight: theme.fontWeights.medium,
-	fontSize: theme.fontSizes.md,
+	fontSize: theme.fontSizes.mmd,
 }));
 
 export const FormWrapper = styled.div`
@@ -76,7 +76,7 @@ export const InputGroup = styled.div`
 
 export const Label = styled.label(({ theme }) => ({
 	color: theme.colors.sodomy200,
-	fontSize: theme.fontSizes.md,
+	fontSize: theme.fontSizes.mmd,
 }));
 
 export const BtnWrapper = styled.div`
