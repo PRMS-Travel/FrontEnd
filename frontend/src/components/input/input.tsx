@@ -4,8 +4,8 @@ import * as S from './input.style';
 
 export interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
 	placeholder?: string;
-	inputValueType: 'email'|'password'|'passwordConfirm'
-	inputStyleType:'email'|'password'|'passwordConfirm'
+	inputValueType?: 'email'|'password'|'passwordConfirm'
+	inputStyleType?:'email'|'password'|'passwordConfirm'
 }
 
 export const Input = React.forwardRef((

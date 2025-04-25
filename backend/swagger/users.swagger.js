@@ -33,9 +33,21 @@
  *               schema:
  *                 type: object
  *                 properties:
- *                   message:
+ *                   id:
+ *                     type: integer
+ *                     example: 1
+ *                   login_id:
  *                     type: string
- *                     example: "성공적으로 로그인 되었습니다."
+ *                     example: "abc123"
+ *                   password:
+ *                     type: string
+ *                     example: "WDPlF+ZUOjg+sQ=="
+ *                   salt:
+ *                     type: string
+ *                     example: "JhcXxhUrAFQ3yg=="
+ *                   created_at:
+ *                     type: integer
+ *                     example: "2025-04-23 12:20:28"
  *         '400':
  *           description: "데이터 누락 또는 형식 오류"
  *           content:

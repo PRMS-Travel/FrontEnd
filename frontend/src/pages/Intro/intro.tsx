@@ -7,21 +7,45 @@ import bgImage from '../../assets/backGround.svg';
 import {AUTH_MESSAGES} from "../../constants/authConstants";
  import {INTRO_MESSAGES} from '../../constants/introConstant'
 import {SearchBar} from "../../components/searchBar/searchBar";
+import {Calendar} from "../../components/calendar/calendar";
+import {List} from"../../components/list/list"
+import {useModal} from "../../hooks/useModal";
+import {useNavigate} from "react-router-dom";
 
 const Intro: React.FC = () => {
-
+	const { isOpenModal, toggleModal } = useModal();
+	const nav = useNavigate();
+	const handleOnClickLogin=  ()=>{
+		nav("/login");
+	}
+	const handleOnClickRegister=  ()=>{
+		nav("/register");
+	}
 	return (
 		<S.BackGround bg={bgImage}>
 			<S.AuthNavContainer>
 				<Close/>
 			<S.AuthMenu>
-				{AUTH_MESSAGES.LOGIN}
+				<div onClick={handleOnClickLogin}>
+					{AUTH_MESSAGES.LOGIN}
+				</div>
 					<Divider/>
-				{AUTH_MESSAGES.REGISTER}
+				<div onClick={handleOnClickRegister}>
+					{AUTH_MESSAGES.REGISTER}</div>
 			</S.AuthMenu>
 			</S.AuthNavContainer>
 			<S.Title>{INTRO_MESSAGES.INTRO}</S.Title>
-			<SearchBar type="location"/>
+			<SearchBar type="location"  onToggleModal={toggleModal}  />
+			{isOpenModal && (
+					<S.ModalWrapper>
+						<div style={{ flex: 1, visibility: isOpenModal.location ? 'visible' : 'hidden' }}>
+							<List />
+						</div>
+						<div style={{ flex: 1, visibility: isOpenModal.date ? 'visible' : 'hidden' }}>
+							<Calendar />
+						</div>
+					</S.ModalWrapper>
+			)}
 		</S.BackGround>
 	);
 };
