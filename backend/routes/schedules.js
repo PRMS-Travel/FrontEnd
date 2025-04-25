@@ -1,25 +1,19 @@
 const express = require('express');
 const router = express.Router();
+const { 
+    getSchedules, 
+    createSchedules, 
+    updateStartTime, 
+    deleteDetails,
+    deleteSchedules} = require("../controller/schedulesController");
 
 router.route('/')
-    .get((req, res) => {
-        res.send("");
-    })
-    .post((req, res) => {
-        res.send("");
-    })
-    .put((req, res) => {
-        res.send("시작 시간 업데이트용");
-    });
+    .get(getSchedules) // mapId 유효성 검사 처리 필요
+    .post(createSchedules)
+    .put(updateStartTime)
+    .delete(deleteSchedules);
 
 router.route('/detail')
-    .post((req, res) => {
-        res.send("");
-    })
-    .delete((req, res) => {
-        res.send("일정 싹다 날림");
-    });
-
-
+    .delete(deleteDetails);
 
 module.exports = router;
