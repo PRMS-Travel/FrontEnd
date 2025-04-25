@@ -128,7 +128,7 @@
 /** 
  * @swagger
  * paths:
- *   /maps/{id}:
+ *   /maps/{mapid}:
  *     put:
  *       tags:
  *         - Maps
