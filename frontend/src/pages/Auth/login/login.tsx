@@ -35,7 +35,7 @@ import bgImage from "../../../assets/backGround.svg";
 import * as S from "./login.style";
 import React from "react";
 import {AUTH_MESSAGES} from "../../../constants/authConstants";
-import Button from "../../../components/button";
+import Button from "../../../hooks/button";
 import {Input} from "../../../components/input/input";
 
 const LabeledInput = ({ label, placeholder }: { label: string; placeholder: string }) => (
