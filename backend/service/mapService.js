@@ -17,7 +17,7 @@ const getMap = async (userId)=> {
 const createMap = async (mapName, userId) => {
     const sql = `INSERT INTO maps (name, user_id) VALUES (?, ?)`;
     const connection = await pool.getConnection();
-    const values = [userId,mapName ];
+    const values = [mapName,userId];
 
     try {
         const [results] = await connection.execute(sql, values);

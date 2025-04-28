@@ -38,7 +38,6 @@ const createPlace = async (req,res) => {
         mapId,
         latitude,
         longitude,
-        stateCode,
     }  = req.body
 
     if (!contentId && !latitude) {
@@ -48,9 +47,9 @@ const createPlace = async (req,res) => {
     try{
         let result;
         if(contentId){
-            result = await placeService.createPlace(contentId, contentTypeId, add1, add2, firstImage1, firstImage2, overview, tel, hmpg, mapId, latitude, longitude, stateCode)
+            result = await placeService.createPlace(contentId, contentTypeId, add1, add2, firstImage1, firstImage2, overview, tel, hmpg, mapId, latitude, longitude)
         } else {
-            result = await placeService.createOrderPlace( latitude, longitude, add1, add2, mapId, stateCode);
+            result = await placeService.createOrderPlace( latitude, longitude, add1, add2, mapId);
         }
 
         if (result.length === 0) {

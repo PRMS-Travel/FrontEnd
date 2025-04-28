@@ -32,7 +32,7 @@ const createMap = async (req,res) => {
     }
 
     try {
-        const result = await mapService.createMap(userId,mapName);
+        const result = await mapService.createMap(mapName,userId);
 
         if (result.affectedRows === 0) {
             return res.status(StatusCodes.NOT_FOUND).json({

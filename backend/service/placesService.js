@@ -28,27 +28,26 @@ const createPlace = async (
         hmpg,
         mapId,
         latitude,
-        longitude,
-        stateCode
+        longitude
     ) => {
 
     const connection = await pool.getConnection();
 
-    const sql = `INSERT INTO places (latitude, longitude, add1, add2, map_id, state_code, contentId, contentTypeId, firstimage, firstimage2, overview, tel, hmpg) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+    const sql = `INSERT INTO places (latitude, longitude, add1, add2, map_id, contentId, contentTypeId, firstimage, firstimage2, overview, tel, hmpg) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`;
     const values = [
         latitude,
         longitude,
         add1,
         add2,
         mapId,
-        stateCode,
         contentId,
         contentTypeId,
         firstImage1,
         firstImage2,
         overview,
         tel,
-        hmpg];
+        hmpg
+        ];
 
         try {
             const results = await connection.execute(sql, values);
@@ -60,10 +59,10 @@ const createPlace = async (
         }
 };
 
-const createOrderPlace = async (latitude, longitude, add1, add2, mapId, stateCode) => {
+const createOrderPlace = async (latitude, longitude, add1, add2, mapId) => {
     const connection = await pool.getConnection();
-    const sql = `INSERT INTO places (latitude, longitude, add1, add2, map_id, state_code) VALUES (?,?,?,?,?,?);`;
-    const values = [latitude, longitude, add1, add2, mapId, stateCode];
+    const sql = `INSERT INTO places (latitude, longitude, add1, add2, map_id VALUES (?,?,?,?,?);`;
+    const values = [latitude, longitude, add1, add2, mapId];
 
     try {
         const results = await connection.execute(sql, values);
