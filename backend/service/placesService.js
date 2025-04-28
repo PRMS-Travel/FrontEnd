@@ -3,8 +3,8 @@ const pool = require("../db/mariadb");
 
 const getPlaces = async (mapId) => {
     const connection = await pool.getConnection();
-    const sql = `SELECT  contentId, contentTypeId, id, add1, add2, firstImage2 FROM places WHERE map_id = ?;`;
-    const values = [mapId];
+    const sql = `SELECT  contentId, contentTypeId, id, add1, add2, firstImage2 FROM places WHERE map_id = ? AND state_code=0;`;
+    const values = [mapId]; 
 
     try {
         const [results] = await connection.query(sql, values); 
@@ -65,7 +65,7 @@ const createOrderPlace = async (latitude, longitude, add1, add2, mapId) => {
     const values = [latitude, longitude, add1, add2, mapId];
 
     try {
-        const results = await connection.execute(sql, values);
+        const [results] = await connection.execute(sql, values);
         return results;
     } catch (error) {
         throw error;
@@ -75,31 +75,21 @@ const createOrderPlace = async (latitude, longitude, add1, add2, mapId) => {
 
 };
 
-const getStateCode = async (placeId, connection) => {
-    const selectSql = `SELECT state_code FROM places WHERE id = ?`;
-    const values = [placeId];
 
-    try{
-        const results = await connection.query(selectSql, values);
-        return results;
-    } catch (error) {
-        throw error;
-    }
-
-};
-
-const updateStateCode = async (StateCode, placeId, connection) => {
+const updateStateCode = async (stateCode, placeId) => {
+    const connection = await pool.getConnection();
     const updateSql = `UPDATE places SET state_code = ? WHERE id = ?`;
-    stateCode = StateCode[0][0].state_code? 0:1;
     const values = [stateCode, parseInt(placeId)];
-    console.log(values);
 
     try{
-        const [result] = await connection.execute(updateSql, values);
-        return [result];
+        const [results] = await connection.execute(updateSql, values);
+        return results;
     } catch (error){
         throw error;
+    } finally {
+        connection.release();
     }
+
 };
 
 const deletePlaces = async (placeId) => {
@@ -108,8 +98,8 @@ const deletePlaces = async (placeId) => {
     const values = [placeId];
 
     try {
-        const [result] = await connection.execute(sql, values);
-        return result;
+        const [results] = await connection.execute(sql, values);
+        return results;
     } catch (error) {
         throw error;
     }
@@ -117,5 +107,5 @@ const deletePlaces = async (placeId) => {
 
 
 module.exports = {
-    getPlaces, createPlace, getStateCode, updateStateCode, deletePlaces, createOrderPlace
+    getPlaces, createPlace, updateStateCode, deletePlaces, createOrderPlace
 };

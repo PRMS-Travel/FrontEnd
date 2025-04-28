@@ -20,8 +20,9 @@ const createSchedules = async (startDay, schedulesDay, mapId, connection) => {
     const values = [];
 
     const startDate = new Date(startDay);
-    startDate.setHours(startDate.getHours() + 18);
+    startDate.setHours(startDate.getHours() + 9);
     // 18 : 표준시간으로부터 한국시간 9 + 오전 9시를 초기시간으로 세팅
+    // 데이터베이스 타임존을 설정하면 잘 나옴 화남
 
     for(let i=0;i<=schedulesDay;i++){
         const currentDate = new Date(startDate);
@@ -59,7 +60,6 @@ const createDetails = async ( details, connection) => {
         if(results.affectedRows !== details.length) {
             throw new Error("일부 삽입 실패");
         }
-
         return results;
     } catch (error) {
         throw error;
@@ -109,21 +109,6 @@ const deleteDetails = async (mapId) => {
     }
 };
 
-const runInTransaction = async (callback) => {
-    const connection = await pool.getConnection();
-    try {
-        await connection.beginTransaction();
-        await callback(connection);
-
-        await connection.commit();
-    } catch (error) {
-        await connection.rollback();
-        throw error;
-    } finally {
-        connection.release();
-    }
-}
-
 module.exports = { 
     getSchedules, 
     createSchedules, 
@@ -131,5 +116,4 @@ module.exports = {
     createDetails,
     deleteSchedules,
     deleteDetails,
-    runInTransaction
 };
