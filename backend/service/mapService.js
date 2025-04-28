@@ -14,18 +14,18 @@ const getMap = async (userId)=> {
     }
 };
 
-const createMap = async (mapName, userId) => {
+const createMap = async (firstMapName, userId, connection) => {
     const sql = `INSERT INTO maps (name, user_id) VALUES (?, ?)`;
-    const connection = await pool.getConnection();
-    const values = [mapName,userId];
+    const values = [firstMapName,userId];
 
     try {
         const [results] = await connection.execute(sql, values);
+        if (results.affectedRows === 0) {
+            throw new Error("Map 생성 실패");
+        }
         return results;
     } catch (error) {
         throw error;
-    } finally {
-        connection.release();
     }
 
 };

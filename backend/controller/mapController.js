@@ -1,4 +1,6 @@
 const mapService = require("../service/mapService");
+const {runInTransaction} = require("../utils/transaction");
+const schedulesService = require("../service/schedulesService")
 const { StatusCodes } = require("http-status-codes");
 
 const getMap = async (req,res) => {
@@ -24,28 +26,28 @@ const getMap = async (req,res) => {
 
 const createMap = async (req,res) => {
     const NotUserid = 999;
-    const userId  = req.body.userId || NotUserid;
-    const { mapName } = req.body;
+    // 난수같은 지정값을 정해야하지만 userId가 외래키라 어케할지 고민중
 
-    if (!mapName) {
-        return res.status(StatusCodes.BAD_REQUEST).json({ massage : "mapName이 없습니다."});
-    }
+    const userId  = req.body.userId || NotUserid;
+    const { firstMapName, startDay, endDay } = req.body;
+    // 프론트에서 초기값은 여행지의 이름으로 받고 저장버튼시 updateMap도 같이
+    
+    const schedulesDay = (new Date(endDay).getTime() - new Date(startDay).getTime()) / (1000*60*60*24);
 
     try {
-        const result = await mapService.createMap(mapName,userId);
+        let result;
+        await runInTransaction(async (connection) => {
+            result = await mapService.createMap(firstMapName,userId,connection);
+            await schedulesService.createSchedules(startDay , schedulesDay, result.insertId, connection);
+        })
 
-        if (result.affectedRows === 0) {
-            return res.status(StatusCodes.NOT_FOUND).json({
-                message: "지도 생성 실패"
-            });
-        } else {
-            return res.status(StatusCodes.CREATED).json({
-                massage : "지도 생성 완료",
-                id : result.insertId,
-                name : mapName,
-                userId : userId == 999 ? "유저가 아닙니다.(999)" : userId,
-            });
-        }
+        return res.status(StatusCodes.CREATED).json({
+            massage : "지도 및 스케쥴 생성 완료",
+            id : result.insertId,
+            name : firstMapName,
+            userId : userId == 999 ? "유저가 아닙니다.(999)" : userId,
+            // 난수같은 지정값을 정해야하지만 userId가 외래키라 어케할지 고민중
+        });  
     } catch (error) {
         console.error("데이터 베이스 서버 오류", error.message);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ massage : "데이터 베이스 서버 오류"});

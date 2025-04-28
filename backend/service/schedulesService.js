@@ -15,15 +15,29 @@ const getSchedules = async (mapId) => {
     }
 };
 
-const createSchedules = async (schedules, connection) => {
+const createSchedules = async (startDay, schedulesDay, mapId, connection) => {
     const sql = SQL_INSERT_SCHEDULES;
     const values = [];
-    schedules.map((item) => values.push(Object.values(item)));
+
+    const startDate = new Date(startDay);
+    startDate.setHours(startDate.getHours() + 18);
+    // 18 : 표준시간으로부터 한국시간 9 + 오전 9시를 초기시간으로 세팅
+
+    for(let i=0;i<=schedulesDay;i++){
+        const currentDate = new Date(startDate);
+        currentDate.setDate(startDate.getDate() + i)
+
+        values.push([
+            i+1,
+            currentDate,
+            mapId
+        ])
+    }
     
     try {
         const [results] = await connection.query(sql, [values]);
 
-        if(results.affectedRows !== schedules.length) {
+        if(results.affectedRows !== values.length) {
             throw new Error("일부 삽입 실패");
         }
 
@@ -33,18 +47,11 @@ const createSchedules = async (schedules, connection) => {
     }
 };
 
-const createDetails = async (insertId, details, connection) => {
+const createDetails = async ( details, connection) => {
     const sql = SQL_INSERT_DETAILS;
     const values = [];
 
-    const detailFull = details.map((detail, idx) => {
-        return {
-            ...detail,
-            scheduleId : insertId + idx
-        };
-    });
-
-    detailFull.map((item) => values.push(Object.values(item)));
+    details.map((item) => values.push(Object.values(item)));
     
     try {
         const [results] = await connection.query(sql, [values]);

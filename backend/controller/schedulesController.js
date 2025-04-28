@@ -1,5 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const scheduleService = require("../service/schedulesService");
+const {runInTransaction} = require("../utils/transaction")
 
 const getSchedules = async (req, res) => {
     const { mapId } = req.query;
@@ -21,25 +22,19 @@ const getSchedules = async (req, res) => {
     }
 }
 
-const createSchedules = async (req, res) => {
-    const { schedules, details } = req.body;
+const createDetails = async (req, res) => {
+    const { details } = req.body;
 
     try {
-        // 저장버튼 클릭 시 한번에 처리
-        // 백엔드 논의 - 스케줄은 map 만들 때 동시 생성? (시간 변경, 변경 저장 시 처리 등의 이유)
-        await scheduleService.runInTransaction(async (connection) => {
-            // 1. 일정 생성
-            const result = await scheduleService.createSchedules(schedules, connection);
-    
-            // 2. detail 생성
-            await scheduleService.createDetails(result.insertId, details, connection);
+        await runInTransaction(async (connection) => {
+            await scheduleService.createDetails( details, connection);
         });
 
         return res.status(StatusCodes.CREATED).end();
     } catch (err) {
         console.log(err);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message : "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요."});
-    }
+    } 
 }
 
 const updateStartTime = async (req, res) => {
@@ -95,7 +90,7 @@ const deleteDetails = async (req, res) => {
 
 module.exports = { 
     getSchedules, 
-    createSchedules, 
+    createDetails, 
     updateStartTime,
     deleteSchedules,
     deleteDetails 

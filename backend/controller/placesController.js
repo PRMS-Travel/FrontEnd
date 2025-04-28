@@ -1,5 +1,5 @@
 const placeService = require("../service/placesService");
-const scheduleService = require("../service/schedulesService");
+const {runInTransaction} = require("../utils/transaction");
 const { StatusCodes } = require("http-status-codes");
 
 const getPlaces = async (req,res) => {
@@ -76,7 +76,7 @@ const updateStateCode = async (req,res) => {
     }
 
     try {
-        await scheduleService.runInTransaction(async (connection) => {
+        await runInTransaction(async (connection) => {
             const result = await placeService.getStateCode(placeId,connection);
             await placeService.updateStateCode(result, placeId, connection);
         })
