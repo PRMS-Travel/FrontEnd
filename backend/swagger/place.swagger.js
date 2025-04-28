@@ -1,12 +1,5 @@
 /**
  * @swagger
- * tags:
- *   - name: Places
- *     description: 장소 관련 API
- */
-
-/**
- * @swagger
  * paths:
  *   /places/:
  *     get:
@@ -55,7 +48,7 @@
  *                       type: string
  *                       example: "썸네일 이미지 URL 주소"
  *         '400':
- *           description: "데이터 누락 또는 형식 오류"
+ *           description: bad request
  *           content:
  *             application/json:
  *               schema:
@@ -63,9 +56,10 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "전달 데이터를 다시 확인해주세요."
+ *                     example: "bad request"
+ * 
  *         '404':
- *           description: id와 일치하는 장소 없음
+ *           description: not found
  *           content:
  *             application/json:
  *               schema:
@@ -73,9 +67,9 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "장소가 존재하지 않습니다."
+ *                     example: "not found"
  *         '500':
- *           description: "서버 오류"
+ *           description: server error ( DB 연결 실패, DB 쿼리 실패 )
  *           content:
  *             application/json:
  *               schema:
@@ -83,7 +77,7 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요."
+ *                     example: "not found"
  * 
  *     post:
  *       tags:
@@ -130,29 +124,11 @@
  *                 mapId:
  *                   type: integer
  *                   example: 1
- *                 latitude:
- *                   type: decimal
- *                   example: 10.000
- *                 longitude:
- *                   type: decimal
- *                   example: 10.000
- *                 stateCode:
- *                   type: integer
- *                   example: 1
- * 
  *       responses:
- *         '201':
- *           description: 장소보관함 목록 추가 성공
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   message:
- *                     type: string
- *                     example: "성공적으로 일정 목록을 저장했습니다."
+ *         '200':
+ *           description: 성공적으로 일정 목록을 저장합니다.
  *         '400':
- *           description: "데이터 누락 또는 형식 오류"
+ *           description: bad request
  *           content:
  *             application/json:
  *               schema:
@@ -160,9 +136,20 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "전달 데이터를 다시 확인해주세요."
+ *                     example: "bad request"
+ * 
+ *         '404':
+ *           description: not found
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "not found"
  *         '500':
- *           description: "서버 오류"
+ *           description: server error ( DB 연결 실패, DB 쿼리 실패 )
  *           content:
  *             application/json:
  *               schema:
@@ -170,13 +157,13 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요."
+ *                     example: "not found"
  */
 
 /**
  * @swagger
  * paths:
- *   /places/{placeId}:
+ *   /places/{id}:
  *     put:
  *       tags:
  *         - Places
@@ -192,9 +179,7 @@
  *             example: 1
  *       responses:
  *         '200':
- *           description: 장소 state 업데이트 성공
- *         '400':
- *           description: "데이터 누락 또는 형식 오류"
+ *           description: 성공적으로 장소를 업데이트
  *           content:
  *             application/json:
  *               schema:
@@ -202,28 +187,39 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "전달 데이터를 다시 확인해주세요."
- *         '404':
- *           description: id와 일치하는 장소 없음
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   message:
- *                     type: string
- *                     example: "장소가 존재하지 않습니다."
- *         '500':
- *           description: "서버 오류"
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   message:
- *                     type: string
- *                     example: "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요."
+ *                     example: "성공적으로 장소를 업데이트"
  * 
+ *         '400':
+ *           description: bad request
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "bad request"
+ * 
+ *         '404':
+ *           description: not found
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "not found"
+ *         '500':
+ *           description: server error ( DB 연결 실패, DB 쿼리 실패 )
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "not found"
  *     delete:
  *       tags:
  *         - Places
@@ -241,17 +237,9 @@
  *             example: 1
  *       responses:
  *         '200':
- *           description: 장소 삭제 성공
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   message:
- *                     type: string
- *                     example: "성공적으로 데이터가 삭제되었습니다."
+ *           description: 성공적으로 장소보관함에서 삭제
  *         '400':
- *           description: "데이터 누락 또는 형식 오류"
+ *           description: bad request
  *           content:
  *             application/json:
  *               schema:
@@ -259,9 +247,10 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "전달 데이터를 다시 확인해주세요."
+ *                     example: "bad request"
+ * 
  *         '404':
- *           description: id와 일치하는 장소 없음
+ *           description: not found
  *           content:
  *             application/json:
  *               schema:
@@ -269,9 +258,10 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "장소가 존재하지 않습니다."
+ *                     example: "not found"
+ * 
  *         '500':
- *           description: "서버 오류"
+ *           description: server error ( DB 연결 실패, DB 쿼리 실패 )
  *           content:
  *             application/json:
  *               schema:
@@ -279,5 +269,5 @@
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요."
+ *                     example: "not found"
  */

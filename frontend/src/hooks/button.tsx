@@ -5,12 +5,11 @@ interface ButtonProps {
     value: string;
     onClick?: () => void;
     className?: string;
-    width?:string;
 }
 
-const Button: React.FC<ButtonProps> = ({ value, onClick, className ,width}) => {
+const Button: React.FC<ButtonProps> = ({ value, onClick, className }) => {
     return (
-    <StyledButton onClick={onClick} className={className} width={width}>
+    <StyledButton onClick={onClick} className={className}>
         {value}
     </StyledButton>
     );
