@@ -10,12 +10,9 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "jsx": "react-jsx",
-    "types": ["vite-plugin-svgr/client"],
+    "types": ["vite-plugin-svgr/client",	"kakao.maps.d.ts"],
     "esModuleInterop": true,
     "jsxImportSource": "@emotion/react",
-    "types": [
-  		"kakao.maps.d.ts"
-		]
   },
   "include": ["src","vite-env.d.ts"]
 
