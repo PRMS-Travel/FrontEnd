@@ -3,6 +3,7 @@ const pool = require("../db/mariadb");
 const getMap = async (userId)=> {
     const connection = await pool.getConnection();
     const sql = `SELECT * FROM maps WHERE user_id = ?`;
+    console.log("map");
 
     try {
         const [results] = await connection.query(sql, [userId]); 
