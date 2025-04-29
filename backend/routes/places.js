@@ -1,19 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-// 장소는 일단 보류합니다.
+const { 
+    getPlaces, 
+    createPlace, 
+    updateStateCode, 
+    deletePlaces 
+} = require('../controller/placesController');
+
 router.route('/')
-    .get((req, res) => {
-    res.send("");
-})
-    .post((req, res) => {
-        res.send("");
-    })
-    .put((req, res) => {
-        res.send("");
-    })
-    .delete((req, res) => {
-        res.send("");
-    });
+    .get(getPlaces)
+    .post(createPlace)
+
+router.route('/:placeId')
+    .put(updateStateCode)
+    .delete(deletePlaces);
 
 module.exports = router;

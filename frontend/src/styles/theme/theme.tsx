@@ -11,6 +11,11 @@ declare module '@emotion/react' {
 			lg: string
 			xl: string
 		};
+		fontWeights: {
+			medium: string
+			bold: string
+			semibold: string
+		}
 		colors: {
 			black: string
 			gray:string
@@ -43,7 +48,6 @@ const theme: Theme = {
 		md: '20px',
 		lg: '40px',
 		xl: '42px',
-
 	},
 	colors: {
 	sodomy200:'#1E2A3C',
@@ -63,7 +67,13 @@ const theme: Theme = {
 		base: '0.625rem',
 		sm:'0.5rem',
 		md:'1rem',
-		lg:' 1.25rem',
+		lg:'1.25rem',
+
+	},
+	fontWeights:{
+		semibold:'600',
+		bold:'700',
+		medium:'500'
 	}
 }
 
