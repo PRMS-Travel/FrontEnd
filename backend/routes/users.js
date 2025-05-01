@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { body } = require("express-validator");
+const { userValidator } = require('../middleware/validator');
 
 const { join, login } = require('../controller/userController');
 
-router.post('/join', join);
-router.post('/login', login);
+router.post('/join', userValidator, join);
+router.post('/login', userValidator, login);
 
 module.exports = router;
