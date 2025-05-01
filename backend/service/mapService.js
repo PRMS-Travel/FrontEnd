@@ -3,7 +3,6 @@ const pool = require("../db/mariadb");
 const getMap = async (userId)=> {
     const connection = await pool.getConnection();
     const sql = `SELECT * FROM maps WHERE user_id = ?`;
-    console.log("map");
 
     try {
         const [results] = await connection.query(sql, [userId]); 
@@ -15,18 +14,18 @@ const getMap = async (userId)=> {
     }
 };
 
-const createMap = async (mapName, userId) => {
+const createMap = async (firstMapName, userId, connection) => {
     const sql = `INSERT INTO maps (name, user_id) VALUES (?, ?)`;
-    const connection = await pool.getConnection();
-    const values = [mapName,userId];
+    const values = [firstMapName,userId];
 
     try {
         const [results] = await connection.execute(sql, values);
+        if (results.affectedRows === 0) {
+            throw new Error("Map 생성 실패");
+        }
         return results;
     } catch (error) {
         throw error;
-    } finally {
-        connection.release();
     }
 
 };
