@@ -43,6 +43,8 @@ export const SearchResult = styled.div`
     box-shadow: 0px 4px 8px 0px rgba(16, 24, 64, 0.08);
     align-items: flex-start;
     padding: 12px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 
     ul{
         display: flex;
@@ -52,8 +54,8 @@ export const SearchResult = styled.div`
         li{
             display: flex;
             width: 336px;
-            height: 54px;
-            padding: 8px 0px;
+            height: max-content;
+            /* padding: 8px 0px; */
             align-items: center;
             justify-content: space-between;
             position: relative;
@@ -68,20 +70,21 @@ export const SearchResult = styled.div`
                     flex-direction: column;
                     justify-content: center;
                     align-items: flex-start;
+                    width: 200px;
 
                     .placeName{
                         color: #1E2A3C;
                         font-family: Inter;
-                        font-size: 14pt;
+                        font-size: 14px;
                         font-style: normal;
-                        font-weight: 500;
+                        font-weight: bolder;
                         line-height: normal;
                     }
 
                     .address{
                         color: #BCC2CC;
                         font-family: Inter;
-                        font-size: 12pt;
+                        font-size: 12px;
                         font-style: normal;
                         font-weight: 500;
                         line-height: normal;
@@ -99,6 +102,7 @@ export const SearchResult = styled.div`
             img{
                 width: 52px;
                 height: 52px;
+                border-radius: 10px;
             }
 
             svg{

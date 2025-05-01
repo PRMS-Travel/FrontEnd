@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import * as S from "./schedule.style.ts";
-import Logo from "../../hooks/logo.tsx";
-import KakaoMap, { KakaoMapHandle } from "../../hooks/map.tsx";
-import Button from "../../hooks/button.tsx";
-import Utils from "../../hooks/utils.tsx";
-import { ButtonWrap } from "../../hooks/button.style.ts";
-import Schedules from '../../hooks/schedules.tsx';
+import * as S from "./schedule.style";
+import Logo from "../../hooks/logo";
+import KakaoMap, { KakaoMapHandle } from "../../hooks/map";
+import Button from "../../hooks/button";
+import Utils from "../../hooks/utils";
+import { ButtonWrap } from "../../hooks/button.style";
+import Schedules from '../../hooks/schedules';
 import { DragBarStyle } from '../../hooks/utils.style';
 import DragBar from '../../assets/dragBar.svg?react';
-import Modal from '../../hooks/Modal.tsx';
+import Modal from '../../hooks/Modal';
 
 const Schedule = () => {
 	const [isUtilsVisible, setIsUtilsVisible] = useState(true);
