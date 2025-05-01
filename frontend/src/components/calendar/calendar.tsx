@@ -1,10 +1,10 @@
 import 'react-calendar/dist/Calendar.css';
 import ReactCalendar from 'react-calendar';
 import moment from 'moment';
-import {useState} from "react";
+import {useSearchBarStore} from "../../store/useSearchBar";
 
 export const Calendar = () => {
-	const [range, setRange] = useState<[Date, Date] | null>(null);
+	const {range, setRange}=useSearchBarStore();
 
 	const onChange = (value: any) => {
 		setRange(value);
@@ -13,6 +13,7 @@ export const Calendar = () => {
 	return (
 		<ReactCalendar
 			onChange={onChange}
+
 			value={range}
 			selectRange={true}
 			prev2Label={null}
@@ -35,32 +36,3 @@ export const Calendar = () => {
 		/>
 	);
 };
-
-
-// import { useState } from "react";
-
-// import {DayRange } from "@hassanmojab/react-modern-calendar-datepicker";
-// import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
-//
-// export const Calendar = () => {
-// 	const [selectedDayRange, setSelectedDayRange] = useState<DayRange>({
-// 		from: undefined,
-// 		to: undefined,
-// 	});
-//
-// 	return (
-// 		<div>
-// 			<DatePicker
-// 				value={selectedDayRange ?? { from: undefined, to: undefined }} // ✅ fallback 보장
-// 				onChange={setSelectedDayRange}
-// 				shouldHighlightWeekends
-// 				inputPlaceholder="Select a range"
-// 				colorPrimary="#122840"
-// 				calendarClassName="my-custom-calendar"
-// 			/>
-// 		</div>
-// 	);
-// };
-
-
-

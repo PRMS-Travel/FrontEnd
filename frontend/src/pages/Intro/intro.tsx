@@ -1,7 +1,7 @@
 import Close from '../../assets/close.svg?react';
 /** @jsxImportSource @emotion/react */
 import * as S from './intro.style';
-import React from 'react';
+import React from "react";
 import Divider from '../../assets/divider.svg?react'
 import bgImage from '../../assets/backGround.svg';
 import {AUTH_MESSAGES} from "../../constants/authConstants";
@@ -12,8 +12,10 @@ import {List} from"../../components/list/list"
 import {useModal} from "../../hooks/useModal";
 import {useNavigate} from "react-router-dom";
 
-const Intro: React.FC = () => {
+
+const Intro: React.FC= () => {
 	const { isOpenModal, toggleModal } = useModal();
+
 	const nav = useNavigate();
 	const handleOnClickLogin=  ()=>{
 		nav("/login");
@@ -42,7 +44,7 @@ const Intro: React.FC = () => {
 							<List />
 						</div>
 						<div style={{ flex: 1, visibility: isOpenModal.date ? 'visible' : 'hidden' }}>
-							<Calendar />
+							<Calendar/>
 						</div>
 					</S.ModalWrapper>
 			)}

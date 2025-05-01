@@ -6,12 +6,21 @@ export const ListContainer = styled.div(({ theme }) => ({
 	background: theme.colors.white,
 	width: '22rem',
 	height: '23rem',
-	padding: '1rem 1.5rem',
+	padding: '1rem',
 	flexDirection: 'column',
 	borderRadius: '1rem',
-	gap: '0.2rem',
+
+
 }));
 
+export const ScrollWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  overflow-y: auto; 
+  height: 100%;
+  padding-right: 0.3rem; 
+`;
 
 export const LocationInfo = styled.div`
   display: flex;
@@ -28,17 +37,13 @@ export const LocationText = styled.div`
   display: flex;
   flex-direction: column;
   line-height: 1.2;
+   
 
 `;
 export const LocationTitle =styled.div(({theme}) => ({
 	color: theme.colors.sodomy200,
 	fontSize: theme.fontSizes.sm,
+
 	fontWeight: theme.fontWeights.medium,
 	lineHeight: 1.2,
-}))
-
-export const LocationSubTitle = styled.div(({theme}) => ({
-	color: theme.colors.gray,
-	fontSize: theme.fontSizes.sm,
-	fontWeight: theme.fontWeights.medium,
 }))
