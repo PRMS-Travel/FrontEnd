@@ -5,17 +5,20 @@ import { AUTH_MESSAGES } from "../../../constants/authConstants";
 import Button from "../../../hooks/button";
 import { Input } from "../../../components/input/input";
 import { useAuthStore } from "../../../store/useUserStore";
+import { useNavigate } from "react-router-dom";
 
 const Register: React.FC = () => {
-	const { loginId, password, setLoginId, setPassword, signup } = useAuthStore();
+	const nav=  useNavigate();
+	const { loginId, pwd, setLoginId, setPassword, signup } = useAuthStore();
 	const [confirmPassword, setConfirmPassword] = useState("");
 
 	const handleSignup = async () => {
-		if (password !== confirmPassword) {
+		if (pwd !== confirmPassword) {
 			alert("비밀번호가 일치하지 않습니다.");
 			return;
 		}
 		await signup();
+		nav("/")
 	};
 	return (
 		<S.BackGround bg={bgImage}>
@@ -37,11 +40,11 @@ const Register: React.FC = () => {
 					<Input
 						label={AUTH_MESSAGES.PASSWORD}
 						placeholder={AUTH_MESSAGES.PASSWORD_REQUIRED}
-						value={password}
+						value={pwd}
 						onChange={(e) => setPassword(e.target.value)}
 						type="password"
 					/>
-					{password && (
+					{pwd && (
 						<Input
 							label={AUTH_MESSAGES.PASSWORD_CHECK_CONFIRM}
 							placeholder={AUTH_MESSAGES.PASSWORD_REQUIRED}

@@ -2,7 +2,7 @@
 import axios from "axios";
 import {useAuthStore} from "./store/useUserStore";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "http://localhost:8000";
 const DEFAULT_TIMEOUT = 30000;
 const instance=axios.create({
 	baseURL:BASE_URL,
