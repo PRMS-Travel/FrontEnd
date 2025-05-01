@@ -11,15 +11,11 @@ const {
 
 
 router.route('/')
-    .get(getMap)
+    .get(authenticateToken,getMap)
     .post(createMap)
 
 router.route('/:mapId')
-    .put(updateMap)
-    .delete(deleteMap);
-
-// 토큰 인증 예시
-router.route('/auth')
-    .get(authenticateToken,getMap);
+    .put(authenticateToken,updateMap)
+    .delete(authenticateToken,deleteMap);
 
 module.exports = router;
