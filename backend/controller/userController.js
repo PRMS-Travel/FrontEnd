@@ -24,11 +24,10 @@ const join = async (req, res) => {
 
 const login = async (req, res) => {
     const {loginId, pwd} = req.body;
-    console.log("login");
 
     try {
         const loginUser = await userService.findUserByLoginId(loginId);
-        console.log(loginUser);
+        
         if (!loginUser[0]) {
             return res.status(StatusCodes.UNAUTHORIZED).json({ message : "아이디 또는 비밀번호를 다시 확인해주세요." });
         }
@@ -49,7 +48,6 @@ const login = async (req, res) => {
             } 
         );
 
-        // token 관련은 추후 업데이트
         return res.status(StatusCodes.OK).json({
             loginUser : loginUser[0],
             token : token

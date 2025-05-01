@@ -4,10 +4,10 @@ const schedulesService = require("../service/schedulesService")
 const { StatusCodes } = require("http-status-codes");
 
 const getMap = async (req,res) => {
-    const { userId } = req.body;
+    const { id } = req.user;
 
     try{
-        const results = await mapService.getMap(userId);
+        const results = await mapService.getMap(id);
 
         if (results.length === 0) {
             return res.status(StatusCodes.NOT_FOUND).json({ massage : "해당 데이터가 없습니다."});

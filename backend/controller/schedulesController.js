@@ -23,11 +23,12 @@ const getSchedules = async (req, res) => {
 }
 
 const createDetails = async (req, res) => {
-    const { details } = req.body;
+    const { details, mapId } = req.body;
 
     try {
         await runInTransaction(async (connection) => {
-            await scheduleService.createDetails( details, connection);
+            await scheduleService.deleteDetails(mapId, connection);
+            await scheduleService.createDetails(details, connection);
         });
 
         return res.status(StatusCodes.CREATED).end();
@@ -36,7 +37,7 @@ const createDetails = async (req, res) => {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message : "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요."});
     } 
 }
-// 저장버튼을 할때 starttime, details를 delete -> insert 순으로 실행
+
 const updateStartTime = async (req, res) => {
     const { startTime, scheduleId } = req.body;
 
@@ -74,6 +75,7 @@ const deleteSchedules = async (req, res) => {
     }
 }
 
+/* 외래키 속성으로 필요없어질 경우 추후 삭제
 const deleteDetails = async (req, res) => {
     const { mapId } = req.query;
     try {
@@ -89,11 +91,12 @@ const deleteDetails = async (req, res) => {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message : "서버에서 오류가 발생했습니다. 관리자에게 문의해주세요."});
     }
 }
+*/
 
 module.exports = { 
     getSchedules, 
     createDetails, 
     updateStartTime, 
     deleteSchedules,
-    deleteDetails 
+    /* deleteDetails */ 
 };
