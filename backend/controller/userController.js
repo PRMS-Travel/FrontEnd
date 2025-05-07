@@ -2,6 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const crypto = require("crypto");
 const userService = require("../service/userService");
 const dotenv = require("dotenv");
+const jwt = require("jsonwebtoken");
 dotenv.config();
 
 const join = async (req, res) => {
@@ -36,8 +37,21 @@ const login = async (req, res) => {
             return res.status(StatusCodes.UNAUTHORIZED).json({ message: "아이디 또는 비밀번호를 다시 확인해주세요." });
         }
 
-        // token 관련은 추후 업데이트
-        return res.status(StatusCodes.OK).json(loginUser[0]);
+        const token = jwt.sign(
+            { 
+                id: loginUser[0].id, 
+                loginId: loginUser[0].login_id 
+            }, 
+            process.env.JWT_SECRET, 
+            {
+                expiresIn: process.env.JWT_EXPIRES_IN  
+            } 
+        );
+
+        return res.status(StatusCodes.OK).json({
+            loginUser : loginUser[0],
+            token : token
+        });
 
     } catch (err) {
         console.log(err);

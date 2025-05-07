@@ -1,19 +1,23 @@
 const express = require('express');
 const router = express.Router();
+const {authenticateToken} = require("../middleware/authMiddleware");
+const { mapIdValidator, createDetailValidator, updateTimeValidator } = require('../middleware/validator');
 const { 
     getSchedules, 
-    createSchedules, 
+    createDetails, 
     updateStartTime, 
-    deleteDetails,
+    /*deleteDetails,*/
     deleteSchedules} = require("../controller/schedulesController");
 
 router.route('/')
-    .get(getSchedules) // mapId 유효성 검사 처리 필요
-    .post(createSchedules)
-    .put(updateStartTime)
-    .delete(deleteSchedules);
+    .get(mapIdValidator, getSchedules)
+    .post(createDetailValidator, createDetails)
+    .put(updateTimeValidator, updateStartTime)
+    .delete(mapIdValidator, deleteSchedules);
 
+/* 외래키 속성으로 필요없어질 경우 추후 삭제
 router.route('/detail')
-    .delete(deleteDetails);
+    .delete(mapIdValidator, deleteDetails);
+*/
 
 module.exports = router;

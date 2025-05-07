@@ -21,7 +21,6 @@ const joinUser = async (loginId, pwd) => {
 
 const findUserByLoginId = async (loginId) => {
     const sql = `SELECT * FROM users WHERE login_id = ?`;
-
     const connection = await pool.getConnection();
     try {
         const [results] = await connection.query(sql, loginId);
