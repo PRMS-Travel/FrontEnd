@@ -11,14 +11,15 @@ export const PlaceBoxTitle = styled.h2`
 export const PlaceBoxArea = styled.div`
     display: flex;
     width: 360px;
-    min-height: 550px;
+    height: 60vh;
     flex-direction: column;
-    align-items: center;
     border-radius: 16px;
     background: #FFF;
     box-shadow: 0px 4px 8px 0px rgba(16, 24, 64, 0.08);
     padding: 12px;
     margin-top: 8px;
+    gap: 16px;
+    overflow-y: scroll;
 
     ul{
         width: 100%;
@@ -33,6 +34,12 @@ export const PlaceList = styled.li`
     justify-content: space-between;
     align-items: center;
 
+    img{
+        width: 52px;
+        height: 52px;
+        border-radius: 10px;
+    }
+
     .itemWrap{
         display: flex;
         gap: 10px;
@@ -45,7 +52,12 @@ export const PlaceList = styled.li`
         justify-content: center;
 
         .placeName{
-        
+            color: #1E2A3C;
+            font-family: Inter;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: bolder;
+            line-height: normal;
         }
 
         .address{
