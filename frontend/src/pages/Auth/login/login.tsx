@@ -34,8 +34,8 @@ const Login: React.FC = () => {
 						<S.LoginMessage>{AUTH_MESSAGES.LOGIN}</S.LoginMessage>
 						<S.WelcomeMessage>{AUTH_MESSAGES.WELCOME}</S.WelcomeMessage>
 					</S.TitleWrapper>
-					<Input label={AUTH_MESSAGES.EMAIL} placeholder={AUTH_MESSAGES.EMAIL_REQUIRED} onChange={(e)=>{setLoginId(e.target.value)}}/>
-					<Input label={AUTH_MESSAGES.PASSWORD} placeholder={AUTH_MESSAGES.PASSWORD_REQUIRED} onChange={(e)=>setPassword(e.target.value)} />
+					<Input label={AUTH_MESSAGES.ID} placeholder={AUTH_MESSAGES.ID_REQUIRED} onChange={(e)=>{setLoginId(e.target.value)}}/>
+					<Input label={AUTH_MESSAGES.PASSWORD} placeholder={AUTH_MESSAGES.PASSWORD_REQUIRED} 	type="password" onChange={(e)=>setPassword(e.target.value)} />
 					<S.BtnWrapper>
 						<Button value={AUTH_MESSAGES.LOGIN} width={"31.25rem"} className="submit" onClick={handleLogin}/>
 						<Button value={AUTH_MESSAGES.REGISTER} width={"31.25rem"} onClick={handleRegister} />

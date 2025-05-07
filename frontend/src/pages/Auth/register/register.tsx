@@ -31,8 +31,8 @@ const Register: React.FC = () => {
 					</S.TitleWrapper>
 
 					<Input
-						label={AUTH_MESSAGES.EMAIL}
-						placeholder={AUTH_MESSAGES.EMAIL_REQUIRED}
+						label={AUTH_MESSAGES.ID}
+						placeholder={AUTH_MESSAGES.ID_REQUIRED}
 						value={loginId}
 						onChange={(e) => setLoginId(e.target.value)}
 					/>

@@ -11,11 +11,12 @@ import {Calendar} from "../../components/calendar/calendar";
 import {List} from"../../components/list/list"
 import {useModal} from "../../hooks/useModal";
 import {useNavigate} from "react-router-dom";
+import {useAuthStore} from "../../store/useUserStore";
 
 
 const Intro: React.FC= () => {
 	const { isOpenModal, toggleModal } = useModal();
-
+const {isLoggedIn,userId} = useAuthStore();
 	const nav = useNavigate();
 	const handleOnClickLogin=  ()=>{
 		nav("/login");
@@ -25,17 +26,30 @@ const Intro: React.FC= () => {
 	}
 	return (
 		<S.BackGround bg={bgImage}>
-			<S.AuthNavContainer>
-				<Close/>
-			<S.AuthMenu>
-				<div onClick={handleOnClickLogin}>
-					{AUTH_MESSAGES.LOGIN}
-				</div>
-					<Divider/>
-				<div onClick={handleOnClickRegister}>
-					{AUTH_MESSAGES.REGISTER}</div>
-			</S.AuthMenu>
-			</S.AuthNavContainer>
+
+				{isLoggedIn? (
+						<S.AuthNavContainer>
+							<Close/>
+							<S.AuthMenu>
+								<div onClick={handleOnClickLogin}>
+									{userId}
+								</div>
+								<Divider/>
+								<div onClick={handleOnClickRegister}>
+									{AUTH_MESSAGES.LOGOUT}</div>
+							</S.AuthMenu>
+						</S.AuthNavContainer>
+				):		<S.AuthNavContainer>
+					<Close/>
+					<S.AuthMenu>
+						<div onClick={handleOnClickLogin}>
+							{AUTH_MESSAGES.LOGIN}
+						</div>
+						<Divider/>
+						<div onClick={handleOnClickRegister}>
+							{AUTH_MESSAGES.REGISTER}</div>
+					</S.AuthMenu>
+				</S.AuthNavContainer>}
 			<S.Title>{INTRO_MESSAGES.INTRO}</S.Title>
 			<SearchBar type="location"  onToggleModal={toggleModal}  />
 			{isOpenModal && (

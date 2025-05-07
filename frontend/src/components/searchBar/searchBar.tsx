@@ -16,6 +16,10 @@ export interface SearchBarProps extends React.HTMLAttributes<HTMLInputElement> {
 export const SearchBar = ({ type, onToggleModal }: SearchBarProps) => {
 	const { range,location } = useSearchBarStore();
 	const nav=useNavigate()
+	const handleSearch=()=>{
+		console.log(location, range)
+		nav("/schedule")
+	}
 	const formatRange = () => {
 		if (!range) return "";
 		const [start, end] = range;
@@ -46,7 +50,7 @@ export const SearchBar = ({ type, onToggleModal }: SearchBarProps) => {
 				readOnly={type === 'date'}
 				onClick={() => onToggleModal('date')}
 			/>
-			<Search onClick={() => nav("/schedule")}/>
+			<Search onClick={handleSearch}/>
 		</S.SearchBarContainer>
 	);
 };
