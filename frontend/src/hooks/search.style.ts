@@ -26,7 +26,7 @@ export const SearchInput = styled.input`
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
-    line-height: 180%; /* 28.8px */
+    line-height: 180%;
     padding-left: 60px;
 `
 
@@ -34,7 +34,7 @@ export const SearchResult = styled.div`
     display: flex;
     margin-top: 20px;
     width: 360px;
-    height: 428px;
+    height: 60vh;
     flex-direction: column;
     justify-content: flex-start;
     flex-shrink: 0;
@@ -55,7 +55,6 @@ export const SearchResult = styled.div`
             display: flex;
             width: 336px;
             height: max-content;
-            /* padding: 8px 0px; */
             align-items: center;
             justify-content: space-between;
             position: relative;
