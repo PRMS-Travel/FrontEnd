@@ -16,7 +16,7 @@ import {useAuthStore} from "../../store/useUserStore";
 
 const Intro: React.FC= () => {
 	const { isOpenModal, toggleModal } = useModal();
-const {isLoggedIn,userId} = useAuthStore();
+const {isLoggedIn,userName} = useAuthStore();
 	const nav = useNavigate();
 	const handleOnClickLogin=  ()=>{
 		nav("/login");
@@ -32,7 +32,7 @@ const {isLoggedIn,userId} = useAuthStore();
 							<Close/>
 							<S.AuthMenu>
 								<div onClick={handleOnClickLogin}>
-									{userId}
+									{userName}
 								</div>
 								<Divider/>
 								<div onClick={handleOnClickRegister}>

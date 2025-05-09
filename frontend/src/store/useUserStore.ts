@@ -34,9 +34,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 		try {
 			const res = await instance.post("/users/join", { loginId, pwd });
 			alert("회원가입 성공: " + res.data.message);
+			get().resetFields();
 		} catch (err: any) {
 			const message = err.response?.data?.message || "회원가입 오류";
 			alert(`에러 ${message}`);
+			get().resetFields();
 		}
 	},
 
@@ -44,19 +46,19 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 		const { loginId, pwd } = get();
 		try {
 			const res = await instance.post("/users/login", { loginId, pwd });
-			const user = res.data;
+			const { loginUser, token } = res.data;
 			set({
 				isLoggedIn: true,
-				userId: user.id,
-				userName: user.login_id,
-				token: user.token ?? null,
+				userId: loginUser.id,
+				userName: loginUser.login_id,
+				token: token ?? null,
 			});
 			get().resetFields();
-			console.log("user data", user);
-			console.log("로그인 성공:", user.login_id);
+			console.log("로그인 성공:", loginUser.login_id);
 		} catch (err: any) {
 			const message = err.response?.data?.message || "로그인 오류.";
 			alert(`오류 ${message}`);
+			get().resetFields();
 		}
 	},
 

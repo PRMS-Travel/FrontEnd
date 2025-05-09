@@ -12,7 +12,7 @@ const authenticateToken = (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(authorization, process.env.JWT_SECRET);
+        const decoded = jwt.verify(authorization, process.env.PRIVATE_KEY);
         // user의 값을 다음 라우터에서도 쓸수있게 decoded 하였다.
         req.user = decoded;
         

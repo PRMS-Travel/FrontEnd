@@ -17,7 +17,6 @@ export const SearchBar = ({ type, onToggleModal }: SearchBarProps) => {
 	const { range,location } = useSearchBarStore();
 	const nav=useNavigate()
 	const handleSearch=()=>{
-		console.log(location, range)
 		nav("/schedule")
 	}
 	const formatRange = () => {
