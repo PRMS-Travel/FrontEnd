@@ -1,12 +1,15 @@
 import React from 'react';
 import PlaceList from './placeList';
 import { HeaderWrap, ScheduleWrap, SubTitleStlye, TimeSetWrap } from './schedule.style';
+import { Place } from './util';
 
 interface ScheduleProps {
     dayNumber: number;
+    placesForDay: Place[];
+    onDeletePlace: (placeId: string) => void; // 해당 날짜에서 장소 삭제 핸들러
 }
 
-const Schedule: React.FC<ScheduleProps> = ({ dayNumber }) => {
+const Schedule: React.FC<ScheduleProps> = ({ dayNumber, placesForDay, onDeletePlace }) => {
     return (
         <ScheduleWrap>
             <HeaderWrap>
@@ -14,11 +17,15 @@ const Schedule: React.FC<ScheduleProps> = ({ dayNumber }) => {
                 <SubTitleStlye>2025.03.27</SubTitleStlye>
             </HeaderWrap>
             <TimeSetWrap>
-                시간 설정 노출
+                <span className='timeSetStart'>시작</span>
+                <input type="time" value="11:30" />
             </TimeSetWrap>
-            {/* 여기에 해당 날짜의 상세 일정 내용을 추가/구성할 수 있습니다. */}
-            {/* 예: <AddPlaceButton day={dayNumber} /> */}
-            <PlaceList day={dayNumber}/>
+
+            <PlaceList
+                droppableId={`day-${dayNumber}`}
+                places={placesForDay}
+                onDeleteItem={onDeletePlace} // PlaceList의 onDeleteItem prop으로 전달
+            />
         </ScheduleWrap>
     );
 };

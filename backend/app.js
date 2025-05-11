@@ -9,8 +9,14 @@ const cors = require('cors');
 
 const { StatusCodes } = require('http-status-codes');
 
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
+
+
+app.use(cors({
+    origin: "http://localhost:5176",
+    credentials: true,
+}));
 
 const usersRouter = require('./routes/users');
 const mapsRouter = require('./routes/maps');
@@ -29,5 +35,3 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs))
 app.use(function(req, res) {
     res.status(StatusCodes.NOT_FOUND).end();
 });
-
-

@@ -20,7 +20,7 @@ export const SubTitleStlye = styled.p`
     font-size: 10pt;
     font-style: normal;
     font-weight: 500;
-    line-height: 100%; /* 10px */
+    line-height: 100%;
     letter-spacing: -0.3px;
 `
 
@@ -36,4 +36,17 @@ export const TimeSetWrap = styled.div`
     justify-content: center;
     margin-top: 9px;
     margin-bottom: 16px;
+    position: relative;
+
+    .timeSetStart{
+        position: absolute;
+        left: 31px;
+        font-size: 14px;
+    }
+
+    input{
+        border: 0;
+        font-family: 'Inter';
+        padding-left: 20px;
+    }
 `

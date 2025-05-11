@@ -1,25 +1,32 @@
 import React,{ForwardedRef} from "react";
-
 import * as S from './input.style';
 
-export interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
+import { AUTH_MESSAGES } from "../../constants/authConstants";
+
+type AuthMessageValue = typeof AUTH_MESSAGES[keyof typeof AUTH_MESSAGES];
+
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+	value?: string;
+	type?: 'email' | 'password' | 'text';
 	placeholder?: string;
-	inputValueType?: 'email'|'password'|'passwordConfirm'
-	inputStyleType?:'email'|'password'|'passwordConfirm'
+	label?: AuthMessageValue;
 }
 
+
 export const Input = React.forwardRef((
-	{placeholder, inputValueType, inputStyleType, onChange,...props}:InputProps, ref:ForwardedRef<HTMLInputElement>
+	{placeholder, label,type, value, onChange,...props}:InputProps, ref:ForwardedRef<HTMLInputElement>
 )=>{
 	return(
 		<S.InputContainer>
+			<S.Label>{label}</S.Label>
 			<S.Input
-				placeholder={placeholder}
 				ref={ref}
-				value={inputValueType}
-				type={inputStyleType}
+				type={type}
+				value={value}
+				placeholder={placeholder}
 				onChange={onChange}
-				{...props}/>
+				{...props}
+			/>
 
 		</S.InputContainer>
 	)

@@ -23,7 +23,7 @@ const SQL_INSERT_SCHEDULES = `
 `;
 
 const SQL_INSERT_DETAILS = `
-    INSERT INTO schedule_detail ( schedule_id ,place_id, order_by, play_time, move_time) VALUES ?
+    INSERT INTO schedule_detail (schedule_id ,place_id, order_by, play_time, move_time) VALUES ?
 `;
 
 const SQL_UPDATE_TIME = `
