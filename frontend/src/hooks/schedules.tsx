@@ -10,9 +10,7 @@ interface SchedulesProps {
 }
 
 const Schedules: React.FC<SchedulesProps> = ({ numberOfDays, daySchedules, onDeletePlaceFromDay }) => {
-
     const daysCount = Math.max(0, numberOfDays);
-
     const daysArray = Array.from({ length: daysCount }, (_, index) => index + 1);
 
     return (

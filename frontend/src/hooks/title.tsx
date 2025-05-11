@@ -8,6 +8,7 @@ const Title = () => {
     const [start, end] = range;
     return `${start.toLocaleDateString()} ~ ${end.toLocaleDateString()}`;
   };
+
     return (
         <TitleWrap>
             <TitleH1>{location}</TitleH1>

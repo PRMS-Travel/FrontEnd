@@ -22,7 +22,6 @@ export const SearchInput = styled.input`
     border-radius: 8px;
     border: 1px solid #7B7B7B;
     background: #FFF;
-    font-family: Inter;
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
