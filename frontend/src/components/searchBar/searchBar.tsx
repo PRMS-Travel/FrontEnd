@@ -22,7 +22,9 @@ export const SearchBar = ({ type, onToggleModal }: SearchBarProps) => {
 	const formatRange = () => {
 		if (!range) return "";
 		const [start, end] = range;
-		return `${start.getFullYear()}.${start.getMonth() + 1}.${start.getDate()} - ${end.getFullYear()}.${end.getMonth() + 1}.${end.getDate()}`;
+		const startDate = new Date(start);
+		const endDate = new Date(end);
+		return `${startDate.getFullYear()}.${startDate.getMonth() + 1}.${startDate.getDate()} - ${endDate.getFullYear()}.${endDate.getMonth() + 1}.${endDate.getDate()}`;
 	};
 	useEffect(() => {
 		if(range && range[0] && range[1]){

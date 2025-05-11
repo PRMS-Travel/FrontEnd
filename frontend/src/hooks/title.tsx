@@ -3,10 +3,12 @@ import {useSearchBarStore} from "../store/useSearchBar";
 
 const Title = () => {
   const { range,location } = useSearchBarStore();
-  const formatRange = () => {
+  const formatRange=()=> {
     if (!range) return "";
     const [start, end] = range;
-    return `${start.toLocaleDateString()} ~ ${end.toLocaleDateString()}`;
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    return `${startDate.getFullYear()}.${startDate.getMonth() + 1}.${startDate.getDate()} - ${endDate.getFullYear()}.${endDate.getMonth() + 1}.${endDate.getDate()}`;
   };
 
     return (
