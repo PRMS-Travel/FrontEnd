@@ -50,9 +50,7 @@ export const useAuthStore = create<AuthState>()(
 				try {
 					const res = await instance.post("/users/login", { loginId, pwd });
 					const { loginUser, token } = res.data;
-
 					localStorage.setItem("accessToken", token);
-
 					set({
 						isLoggedIn: true,
 						userId: loginUser.id,
@@ -71,7 +69,6 @@ export const useAuthStore = create<AuthState>()(
 
 			logout: () => {
 				localStorage.removeItem("accessToken");
-
 				set({
 					loginId: "",
 					pwd: "",

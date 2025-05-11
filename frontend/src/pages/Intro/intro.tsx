@@ -13,16 +13,18 @@ import {useModal} from "../../hooks/useModal";
 import {useNavigate} from "react-router-dom";
 import {useAuthStore} from "../../store/useUserStore";
 
-
 const Intro: React.FC= () => {
 	const { isOpenModal, toggleModal } = useModal();
-const {isLoggedIn,userName} = useAuthStore();
+const {isLoggedIn,userName,logout} = useAuthStore();
 	const nav = useNavigate();
 	const handleOnClickLogin=  ()=>{
 		nav("/login");
 	}
 	const handleOnClickRegister=  ()=>{
 		nav("/register");
+	}
+	const handleOnClickLogout=()=>{
+		logout()
 	}
 	return (
 		<S.BackGround bg={bgImage}>
@@ -35,7 +37,7 @@ const {isLoggedIn,userName} = useAuthStore();
 									{userName}
 								</div>
 								<Divider/>
-								<div onClick={handleOnClickRegister}>
+								<div onClick={handleOnClickLogout}>
 									{AUTH_MESSAGES.LOGOUT}</div>
 							</S.AuthMenu>
 						</S.AuthNavContainer>
