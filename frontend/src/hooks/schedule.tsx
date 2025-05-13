@@ -2,19 +2,22 @@ import React from 'react';
 import PlaceList from './placeList';
 import { HeaderWrap, ScheduleWrap, SubTitleStlye, TimeSetWrap } from './schedule.style';
 import { Place } from './util';
+import {getDateForDay} from "../utils/date";
 
 interface ScheduleProps {
     dayNumber: number;
+    startDate:Date | undefined;
     placesForDay: Place[];
     onDeletePlace: (placeId: string) => void; // 해당 날짜에서 장소 삭제 핸들러
 }
 
-const Schedule: React.FC<ScheduleProps> = ({ dayNumber, placesForDay, onDeletePlace }) => {
+const Schedule: React.FC<ScheduleProps> = ({ dayNumber,startDate, placesForDay, onDeletePlace }) => {
+
     return (
         <ScheduleWrap>
             <HeaderWrap>
                 <h2>{dayNumber}일차</h2>
-                <SubTitleStlye>2025.03.27</SubTitleStlye>
+                <SubTitleStlye>  {startDate ? getDateForDay(startDate, dayNumber) : '날짜 없음'}</SubTitleStlye>
             </HeaderWrap>
             <TimeSetWrap>
                 <span className='timeSetStart'>시작</span>

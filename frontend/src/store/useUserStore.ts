@@ -15,6 +15,7 @@ interface AuthState {
 	logout: () => void;
 	signup: () => Promise<void>;
 	resetFields: () => void;
+	setAutoLogout:(timeout: number) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -50,16 +51,14 @@ export const useAuthStore = create<AuthState>()(
 				try {
 					const res = await instance.post("/users/login", { loginId, pwd });
 					const { loginUser, token } = res.data;
-
 					localStorage.setItem("accessToken", token);
-
 					set({
 						isLoggedIn: true,
 						userId: loginUser.id,
 						userName: loginUser.login_id,
 						token: token ?? null,
 					});
-
+					get().setAutoLogout(30 * 60 * 1000);
 					get().resetFields();
 					console.log("로그인 성공:", loginUser.login_id);
 				} catch (err: any) {
@@ -71,7 +70,6 @@ export const useAuthStore = create<AuthState>()(
 
 			logout: () => {
 				localStorage.removeItem("accessToken");
-
 				set({
 					loginId: "",
 					pwd: "",
@@ -84,6 +82,12 @@ export const useAuthStore = create<AuthState>()(
 				get().resetFields();
 				console.log("로그아웃 성공");
 			},
+			setAutoLogout:(timeout)=>{
+				setTimeout(() => {
+					get().logout();
+					alert("다시 로그인해주세요.")
+				},timeout)
+			}
 		}),
 		{
 			name: "auth-storage", // localStorage에 저장될 이름

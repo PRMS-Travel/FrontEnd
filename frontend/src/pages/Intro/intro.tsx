@@ -12,11 +12,12 @@ import {List} from"../../components/list/list"
 import {useModal} from "../../hooks/useModal";
 import {useNavigate} from "react-router-dom";
 import {useAuthStore} from "../../store/useUserStore";
-
+import {useSearchBarStore} from "../../store/useSearchBar";
 
 const Intro: React.FC= () => {
 	const { isOpenModal, toggleModal } = useModal();
-const {isLoggedIn,userName} = useAuthStore();
+const {resetFields}=useSearchBarStore();
+const {isLoggedIn,userName,logout} = useAuthStore();
 	const nav = useNavigate();
 	const handleOnClickLogin=  ()=>{
 		nav("/login");
@@ -24,9 +25,13 @@ const {isLoggedIn,userName} = useAuthStore();
 	const handleOnClickRegister=  ()=>{
 		nav("/register");
 	}
+	const handleOnClickLogout=()=>{
+		logout();
+		resetFields()
+
+	}
 	return (
 		<S.BackGround bg={bgImage}>
-
 				{isLoggedIn? (
 						<S.AuthNavContainer>
 							<Close/>
@@ -35,7 +40,7 @@ const {isLoggedIn,userName} = useAuthStore();
 									{userName}
 								</div>
 								<Divider/>
-								<div onClick={handleOnClickRegister}>
+								<div onClick={handleOnClickLogout}>
 									{AUTH_MESSAGES.LOGOUT}</div>
 							</S.AuthMenu>
 						</S.AuthNavContainer>
