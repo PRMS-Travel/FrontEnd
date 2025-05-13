@@ -12,9 +12,11 @@ import {List} from"../../components/list/list"
 import {useModal} from "../../hooks/useModal";
 import {useNavigate} from "react-router-dom";
 import {useAuthStore} from "../../store/useUserStore";
+import {useSearchBarStore} from "../../store/useSearchBar";
 
 const Intro: React.FC= () => {
 	const { isOpenModal, toggleModal } = useModal();
+const {resetFields}=useSearchBarStore();
 const {isLoggedIn,userName,logout} = useAuthStore();
 	const nav = useNavigate();
 	const handleOnClickLogin=  ()=>{
@@ -24,11 +26,12 @@ const {isLoggedIn,userName,logout} = useAuthStore();
 		nav("/register");
 	}
 	const handleOnClickLogout=()=>{
-		logout()
+		logout();
+		resetFields()
+
 	}
 	return (
 		<S.BackGround bg={bgImage}>
-
 				{isLoggedIn? (
 						<S.AuthNavContainer>
 							<Close/>
