@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const StyledButton = styled.button<{
 	width?: string;
 }>`
-    font-size: 24px;
+    font-size: 20px;
     width: ${({ width }) => width || "80px"};
     height: 50px;
     background-color: white;

@@ -20,7 +20,6 @@ const convertToPlace = (item: AreaBasedListItem): Place => {
 };
 
 const Search: React.FC<SearchProps> = ({ onAddPlace }) => {
-
     const [inputValue, setInputValue] = useState('');
     const [isFocused, setIsFocused] = useState(false);
     const [searchResults, setSearchResults] = useState<AreaBasedListItem[]>([]);
@@ -68,6 +67,7 @@ const Search: React.FC<SearchProps> = ({ onAddPlace }) => {
     return (
         <SearchWrap>
             <div className='searchArea'>
+                <Marker />
                 <SearchInput
                     type="search"
                     name="search-input"
@@ -77,7 +77,7 @@ const Search: React.FC<SearchProps> = ({ onAddPlace }) => {
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                 />
-                <Marker />
+
             </div>
             {shouldRenderResultsContainer && (
                 <SearchResult>

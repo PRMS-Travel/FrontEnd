@@ -11,6 +11,8 @@ import { DragBarStyle } from '../../hooks/utils.style';
 import DragBar from '../../assets/dragBar.svg?react';
 import { Place } from '../../hooks/util';
 import Modal from '../../hooks/Modal';
+import {useAuthStore} from "../../store/useUserStore";
+import {useCountDay} from "../../hooks/useDateRangeDay";
 
 const Schedule = () => {
 	const [isUtilsVisible, setIsUtilsVisible] = useState(true);
@@ -19,10 +21,10 @@ const Schedule = () => {
 	const dragBarRef = useRef<HTMLDivElement>(null);
 	const isDragging = useRef<boolean>(false);
 	const mapRef = useRef<KakaoMapHandle>(null);
+	const {isLoggedIn} = useAuthStore();
 
 	const [savedPlaces, setSavedPlaces] = useState<Place[]>([]);
 	const [daySchedules, setDaySchedules] = useState<Record<string, Place[]>>({}); // 예: { "day-1": [place1, place2], "day-2": [] }
-
 	const [toggleModal, setToggleModal] = useState(false);
 
 	const minWidth = 100;
@@ -49,7 +51,6 @@ const Schedule = () => {
 				document.body.style.cursor = 'default';
 				window.removeEventListener("mousemove", handleMouseMove);
 				window.removeEventListener("mouseup", handleMouseUp);
-
 				mapRef.current?.relayout();
 			}
 		};
@@ -122,7 +123,6 @@ const Schedule = () => {
         if (!destination) {
             return; // 드롭 영역 밖으로 드롭된 경우
         }
-
         const sourceId = source.droppableId;
         const destinationId = destination.droppableId;
 
@@ -183,6 +183,7 @@ const Schedule = () => {
 	const handleCloseModal = () => {
         setToggleModal(false);
     }
+		const numberOfdays=useCountDay();
 
 	return (
 		<DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
@@ -191,14 +192,14 @@ const Schedule = () => {
 				<S.Header>
 					<div className="logo_wrap">
 						<Logo />
-						<Button className="loginButton" value='로그인' onClick={handleLoginButton}/>
+						{isLoggedIn ? (
+							<Button className="loginButton" value='로그아웃' onClick={handleLoginButton}/>):<Button className="loginButton" value='로그인' onClick={handleLoginButton}/>}
 					</div>
 					<ButtonWrap>
 						<Button
 							value={isUtilsVisible ? "닫기" : "열기"}
 							onClick={handleToggleUtils}
 						/>
-						<Button value="편집" />
 						<Button value="저장" className="submit" onClick={handleSaveButton} />
 					</ButtonWrap>
 				</S.Header>
@@ -214,7 +215,7 @@ const Schedule = () => {
 							/>
 						)}
 						<Schedules
-							numberOfDays={3} // 나중에 Intro에서 받아오기
+							numberOfDays={numberOfdays}
 							daySchedules={daySchedules}
                             onDeletePlaceFromDay={handleDeletePlaceFromDaySchedule}
 						/>

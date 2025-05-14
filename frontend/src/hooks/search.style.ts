@@ -1,5 +1,4 @@
-import styled from "styled-components";
-
+import styled from "@emotion/styled";
 export const SearchWrap = styled.article`
     .searchArea{
         position: relative;
@@ -22,12 +21,14 @@ export const SearchInput = styled.input`
     border-radius: 8px;
     border: 1px solid #7B7B7B;
     background: #FFF;
-    font-family: Inter;
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
     line-height: 180%;
     padding-left: 60px;
+	&::-webkit-search-cancel-button {
+		margin-right: 12px;
+},
 `
 
 export const SearchResult = styled.div`
@@ -73,7 +74,7 @@ export const SearchResult = styled.div`
 
                     .placeName{
                         color: #1E2A3C;
-                        font-family: Inter;
+   
                         font-size: 14px;
                         font-style: normal;
                         font-weight: bolder;
@@ -82,7 +83,7 @@ export const SearchResult = styled.div`
 
                     .address{
                         color: #BCC2CC;
-                        font-family: Inter;
+               
                         font-size: 12px;
                         font-style: normal;
                         font-weight: 500;

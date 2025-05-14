@@ -13,7 +13,6 @@ export const Calendar = () => {
 	return (
 		<ReactCalendar
 			onChange={onChange}
-
 			value={range}
 			selectRange={true}
 			prev2Label={null}
@@ -23,10 +22,8 @@ export const Calendar = () => {
 			tileClassName={({ date, view }) => {
 				if (range && view === 'month') {
 					const [start, end] = range;
-
 					const isSameDay = (a: Date, b: Date) => moment(a).isSame(b, 'day');
 					const isInRange = moment(date).isBetween(start, end, 'day', '[]');
-
 					if (isSameDay(date, start)) return 'range-start';
 					if (isSameDay(date, end)) return 'range-end';
 					if (isInRange) return 'range-middle';

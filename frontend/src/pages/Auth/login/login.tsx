@@ -18,7 +18,7 @@ const Login: React.FC = () => {
 			return;
 		}
 		await login();
-		console.log(loginId);
+		console.log("loginId:", loginId, "pwd:", pwd);
 
 		nav('/')
 	}
