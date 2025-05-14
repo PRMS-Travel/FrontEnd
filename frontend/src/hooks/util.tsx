@@ -7,6 +7,8 @@ export interface Place {
     name: string;
     address: string;
     img?: string;
+    mapx: string;
+    mapy: string;
 }
 
 interface UtilProps {

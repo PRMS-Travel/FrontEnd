@@ -15,7 +15,9 @@ const convertToPlace = (item: AreaBasedListItem): Place => {
         id: item.contentid ? String(item.contentid) : `custom-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
         name: item.title || "이름 정보 없음",
         address: item.addr1,
-        img: item.firstimage || item.firstimage2 || '/assets/images/test.png' // API 응답에 따라 firstimage가 우선일 수 있음
+        img: item.firstimage || item.firstimage2 || '/assets/images/test.png', // API 응답에 따라 firstimage가 우선일 수 있음
+        mapx: item.mapx,
+        mapy: item.mapy,
     };
 };
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { DragDropContext, DropResult, DragStart } from '@hello-pangea/dnd';
 import * as S from "./schedule.style";
 import Logo from "../../hooks/logo";
@@ -24,7 +24,8 @@ const Schedule = () => {
 	const {isLoggedIn} = useAuthStore();
 
 	const [savedPlaces, setSavedPlaces] = useState<Place[]>([]);
-	const [daySchedules, setDaySchedules] = useState<Record<string, Place[]>>({}); // 예: { "day-1": [place1, place2], "day-2": [] }
+	const [daySchedules, setDaySchedules] = useState<Record<string, Place[]>>({});
+
 	const [toggleModal, setToggleModal] = useState(false);
 
 	const minWidth = 100;
@@ -121,7 +122,7 @@ const Schedule = () => {
         const { source, destination } = result;
 
         if (!destination) {
-            return; // 드롭 영역 밖으로 드롭된 경우
+            return;
         }
         const sourceId = source.droppableId;
         const destinationId = destination.droppableId;
@@ -132,7 +133,7 @@ const Schedule = () => {
                 const [reorderedItem] = items.splice(source.index, 1);
                 items.splice(destination.index, 0, reorderedItem);
                 setSavedPlaces(items);
-            } else if (sourceId.startsWith('day-')) { // 일정 내에서의 순서 변경
+            } else if (sourceId.startsWith('day-')) {
                 const dayKey = sourceId;
                 const items = Array.from(daySchedules[dayKey] || []);
                 const [reorderedItem] = items.splice(source.index, 1);
@@ -140,33 +141,30 @@ const Schedule = () => {
                 setDaySchedules(prev => ({ ...prev, [dayKey]: items }));
             }
         } else {
-            // 다른 목록으로 아이템 이동 (장소보관함 -> 특정 날짜의 일정)
             if (sourceId === 'placeBox' && destinationId.startsWith('day-')) {
                 const itemToMove = savedPlaces[source.index];
                 
-                // 목적지 날짜에 이미 해당 아이템이 있는지 ID로 확인
                 if ((daySchedules[destinationId] || []).some(p => p.id === itemToMove.id)) {
                     alert("이미 해당 날짜의 일정에 추가된 장소입니다.");
                     return;
                 }
 
                 const newSavedPlaces = Array.from(savedPlaces);
-                newSavedPlaces.splice(source.index, 1); // 원본에서 제거
+                newSavedPlaces.splice(source.index, 1);
                 setSavedPlaces(newSavedPlaces);
 
                 const newDaySchedule = Array.from(daySchedules[destinationId] || []);
-                newDaySchedule.splice(destination.index, 0, itemToMove); // 목적지에 추가
+                newDaySchedule.splice(destination.index, 0, itemToMove);
                 setDaySchedules(prev => ({ ...prev, [destinationId]: newDaySchedule }));
             }
-			// 한 날짜의 일정에서 다른 날짜의 일정으로 아이템 이동
             else if (sourceId.startsWith('day-') && destinationId.startsWith('day-')) {
                 const sourceDayKey = sourceId;
                 const destinationDayKey = destinationId;
 
                 const sourceDayItems = Array.from(daySchedules[sourceDayKey] || []);
-                const [movedItem] = sourceDayItems.splice(source.index, 1); // 소스에서 아이템 제거
+                const [movedItem] = sourceDayItems.splice(source.index, 1);
                 const destinationDayItems = Array.from(daySchedules[destinationDayKey] || []);
-                destinationDayItems.splice(destination.index, 0, movedItem); // 목적지에 아이템 추가
+                destinationDayItems.splice(destination.index, 0, movedItem);
 
                 setDaySchedules(prev => ({
                     ...prev,
@@ -180,13 +178,21 @@ const Schedule = () => {
 	const handleLoginButton = () => {
 		window.location.href = '/login';
 	}
+	const numberOfdays=useCountDay();
+
 	const handleCloseModal = () => {
-        setToggleModal(false);
-    }
-		const numberOfdays=useCountDay();
+		setToggleModal(false);
+	}
+
+	const allPlacesForMap = useMemo(() => {
+		const placesFromScheduleDays = Object.values(daySchedules).flat();
+
+		const uniquePlacesInSchedules = Array.from(new Map(placesFromScheduleDays.map(place => [place.id, place])).values());
+		return uniquePlacesInSchedules;
+	}, [daySchedules]);
 
 	return (
-		<DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+		<DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd} >
 			<S.Container id="schedule">
 				<Modal $view={toggleModal} onClose={handleCloseModal} type={modalType}/>
 				<S.Header>
@@ -224,7 +230,10 @@ const Schedule = () => {
 						</DragBarStyle>
 					</S.ResizableContainer>
 				</S.Main>
-				<KakaoMap ref={mapRef} />
+				<KakaoMap
+					ref={mapRef}
+					places={allPlacesForMap}
+				/>
 			</S.Container>
 		</DragDropContext>
 	);
