@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react'; // useCallback 임포트
 import { DragDropContext, DropResult, DragStart } from '@hello-pangea/dnd';
 import * as S from "./schedule.style";
 import Logo from "../../hooks/logo";
@@ -13,6 +13,13 @@ import { Place } from '../../hooks/util';
 import Modal from '../../hooks/Modal';
 import {useAuthStore} from "../../store/useUserStore";
 import {useCountDay} from "../../hooks/useDateRangeDay";
+import { KakaoNaviCoord } from '../../api/kakao.mobility.api'; // KakaoNaviCoord 타입 임포트
+
+// KakaoMap에 전달할 경로 세그먼트와 색상 정보를 함께 담는 타입
+export interface RouteSegmentWithColor {
+    coordinates: KakaoNaviCoord[];
+    color: string;
+}
 
 const Schedule = () => {
 	const [isUtilsVisible, setIsUtilsVisible] = useState(true);
@@ -25,6 +32,10 @@ const Schedule = () => {
 
 	const [savedPlaces, setSavedPlaces] = useState<Place[]>([]);
 	const [daySchedules, setDaySchedules] = useState<Record<string, Place[]>>({});
+
+	// KakaoMap에 전달될 모든 경로 세그먼트를 저장하는 상태
+	const [allMapRouteSegments, setAllMapRouteSegments] = useState<RouteSegmentWithColor[]>([]);
+
 
 	const [toggleModal, setToggleModal] = useState(false);
 
@@ -78,11 +89,11 @@ const Schedule = () => {
 		};
 	}, [minWidth, maxWidth]);
 
-	let modalType: string = "";
+	const [modalType, setModalType] = useState<string>(""); // modalType을 상태로 관리
 
 	const handleSaveButton = () => {
 		setToggleModal(true);
-		modalType = "save";
+		setModalType("save"); // 상태 업데이트 함수 사용
 	}
 
 	const handleToggleUtils = () => {
@@ -131,20 +142,24 @@ const Schedule = () => {
             if (sourceId === 'placeBox') {
                 const items = Array.from(savedPlaces);
                 const [reorderedItem] = items.splice(source.index, 1);
-                items.splice(destination.index, 0, reorderedItem);
+                // savedPlaces의 아이템에는 dayNumber가 없을 수 있으므로, 그대로 유지
+                items.splice(destination.index, 0, { ...reorderedItem, dayNumber: undefined });
                 setSavedPlaces(items);
             } else if (sourceId.startsWith('day-')) {
                 const dayKey = sourceId;
+                const dayNum = parseInt(dayKey.split('-')[1], 10);
                 const items = Array.from(daySchedules[dayKey] || []);
                 const [reorderedItem] = items.splice(source.index, 1);
-                items.splice(destination.index, 0, reorderedItem);
+                // 같은 날짜 내에서 이동하므로 dayNumber 유지 또는 재설정
+                items.splice(destination.index, 0, { ...reorderedItem, dayNumber: dayNum });
                 setDaySchedules(prev => ({ ...prev, [dayKey]: items }));
             }
         } else {
             if (sourceId === 'placeBox' && destinationId.startsWith('day-')) {
-                const itemToMove = savedPlaces[source.index];
+                const itemToMoveFromSaved = { ...savedPlaces[source.index] }; // 복사본 사용
+                const destinationDayNum = parseInt(destinationId.split('-')[1], 10);
                 
-                if ((daySchedules[destinationId] || []).some(p => p.id === itemToMove.id)) {
+                if ((daySchedules[destinationId] || []).some(p => p.id === itemToMoveFromSaved.id)) {
                     alert("이미 해당 날짜의 일정에 추가된 장소입니다.");
                     return;
                 }
@@ -152,19 +167,25 @@ const Schedule = () => {
                 const newSavedPlaces = Array.from(savedPlaces);
                 newSavedPlaces.splice(source.index, 1);
                 setSavedPlaces(newSavedPlaces);
-
+                
+                // 목적지 날짜에 추가될 때 dayNumber 설정
+                const itemToAddWithDayNumber = { ...itemToMoveFromSaved, dayNumber: destinationDayNum };
                 const newDaySchedule = Array.from(daySchedules[destinationId] || []);
-                newDaySchedule.splice(destination.index, 0, itemToMove);
+                newDaySchedule.splice(destination.index, 0, itemToAddWithDayNumber);
                 setDaySchedules(prev => ({ ...prev, [destinationId]: newDaySchedule }));
             }
             else if (sourceId.startsWith('day-') && destinationId.startsWith('day-')) {
                 const sourceDayKey = sourceId;
                 const destinationDayKey = destinationId;
+                // const sourceDayNum = parseInt(sourceDayKey.split('-')[1], 10);
+                const destinationDayNum = parseInt(destinationDayKey.split('-')[1], 10);
 
                 const sourceDayItems = Array.from(daySchedules[sourceDayKey] || []);
                 const [movedItem] = sourceDayItems.splice(source.index, 1);
+                // 다른 날짜로 이동하므로, 목적지 날짜의 dayNumber로 업데이트
+                const movedItemWithNewDayNumber = { ...movedItem, dayNumber: destinationDayNum };
                 const destinationDayItems = Array.from(daySchedules[destinationDayKey] || []);
-                destinationDayItems.splice(destination.index, 0, movedItem);
+                destinationDayItems.splice(destination.index, 0, movedItemWithNewDayNumber);
 
                 setDaySchedules(prev => ({
                     ...prev,
@@ -190,6 +211,19 @@ const Schedule = () => {
 		const uniquePlacesInSchedules = Array.from(new Map(placesFromScheduleDays.map(place => [place.id, place])).values());
 		return uniquePlacesInSchedules;
 	}, [daySchedules]);
+
+	// Schedules 컴포넌트로부터 집계된 경로 세그먼트를 받아 상태를 업데이트하는 콜백 함수
+	const handleUpdateAllRouteSegments = useCallback((segmentsWithColor: RouteSegmentWithColor[]) => {
+		// 개발 환경에서만 상세 로그를 출력하도록 변경하거나, 디버깅 완료 후 제거
+		if (import.meta.env.NODE_ENV === 'development') {
+			console.log(
+				"[Page/Schedule] Received all aggregated segments with color for KakaoMap:",
+				JSON.parse(JSON.stringify(segmentsWithColor))
+			);
+		}
+		setAllMapRouteSegments(segmentsWithColor);
+	}, []); 
+
 
 	return (
 		<DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd} >
@@ -224,6 +258,7 @@ const Schedule = () => {
 							numberOfDays={numberOfdays}
 							daySchedules={daySchedules}
                             onDeletePlaceFromDay={handleDeletePlaceFromDaySchedule}
+							onUpdateAllRouteSegments={handleUpdateAllRouteSegments} // 콜백 함수 전달
 						/>
 						<DragBarStyle ref={dragBarRef}>
 							<DragBar />
@@ -233,6 +268,7 @@ const Schedule = () => {
 				<KakaoMap
 					ref={mapRef}
 					places={allPlacesForMap}
+					routeSegments={allMapRouteSegments} // 집계된 경로 세그먼트 전달
 				/>
 			</S.Container>
 		</DragDropContext>

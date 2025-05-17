@@ -9,6 +9,9 @@ export interface Place {
     img?: string;
     mapx: string;
     mapy: string;
+    contentId?: string;
+    contentTypeId?: string;
+    dayNumber?: number; // 몇 일차 장소인지 나타내는 정보 (추가)
 }
 
 interface UtilProps {

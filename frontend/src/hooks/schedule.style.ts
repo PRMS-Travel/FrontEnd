@@ -50,3 +50,10 @@ export const TimeSetWrap = styled.div`
         padding-left: 20px;
     }
 `
+
+export const TravelTimeLoadingStyle = styled.p`
+    padding: 10px;
+    text-align: center;
+    color: #777;
+    font-size: 0.9em;
+`;

@@ -23,3 +23,11 @@ export const PlaceItemStyle = styled.li<{ $isDragging?: boolean }>`
     align-items: center;
     font-size: 0.9rem;
 `;
+
+export const TravelTimeStyle = styled.div`
+    font-size: 0.85em;
+    color: #333;
+    padding: 6px 10px 10px 50px;
+    margin-bottom: 8px;
+    position: relative;
+`;
